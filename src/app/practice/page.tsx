@@ -22,11 +22,11 @@ const tools = [
     title: "Эмбиент",
     desc: "Бесконечный звуковой поток",
   },
-  {
-    href: "/practice/streak",
-    title: "Мысль дня",
-    desc: "Сохраните для себя",
-  },
+  // {
+  //   href: "/practice/streak",
+  //   title: "Мысль дня",
+  //   desc: "Сохраните для себя",
+  // },
 ];
 
 export default function PracticePage() {
