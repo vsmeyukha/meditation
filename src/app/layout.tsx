@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/shared/ui/sonner";
 import { Header } from "@/widgets/header/ui/Header";
+import { FloatingAmbientButton } from "@/shared/ui/floating-player/FloatingAmbientButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
         {children}
+        <FloatingAmbientButton />
         <Toaster richColors position="top-center" />
       </body>
     </html>

@@ -1,37 +1,34 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Slider } from "@/shared/ui/slider";
 import { Card, CardContent } from "@/shared/ui/card";
-import { readLocalStorage, storageKeys, writeLocalStorage, MixerState } from "@/shared/lib/storage";
-import { setAmbientVolumes, setEnabledAmbient } from "@/shared/lib/ambientEngine";
+import { ambientStore } from "@/shared/lib/ambientStore";
 import { Switch } from "@/shared/ui/switch";
+import { Button } from "@/shared/ui/button";
 
 export function AmbientMixer() {
-  const [state, setState] = useState<MixerState>(
-    readLocalStorage<MixerState>(storageKeys.mixer, { rain: 0.3, stream: 0.2, bowls: 0.1, enabled: false })
+  const state = useSyncExternalStore(
+    (cb) => ambientStore.subscribe(cb),
+    () => ambientStore.getState(),
+    () => ambientStore.getState()
   );
-  useEffect(() => {
-    writeLocalStorage(storageKeys.mixer, state);
-  }, [state]);
-
-  useEffect(() => {
-    void setEnabledAmbient(state.enabled, { rain: state.rain, stream: state.stream, bowls: state.bowls });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.enabled]);
-
-  useEffect(() => {
-    if (!state.enabled) return;
-    setAmbientVolumes({ rain: state.rain, stream: state.stream, bowls: state.bowls });
-  }, [state.rain, state.stream, state.bowls, state.enabled]);
 
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div className="text-sm text-zinc-700">Enable ambient</div>
-        <Switch checked={state.enabled} onCheckedChange={(v) => setState((s) => ({ ...s, enabled: v }))} />
+        <Switch checked={state.enabled} onCheckedChange={(v) => ambientStore.setEnabled(v)} />
       </div>
       <Card>
         <CardContent className="p-4 space-y-4">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-zinc-700">Status: {state.enabled ? "Playing" : "Paused"}</div>
+            {!state.enabled ? (
+              <Button size="sm" onClick={() => ambientStore.setEnabled(true)}>Play</Button>
+            ) : (
+              <Button size="sm" variant="outline" onClick={() => ambientStore.setEnabled(false)}>Pause</Button>
+            )}
+          </div>
           {(
             [
               { key: "rain" as const, label: "Rain" },
@@ -49,7 +46,7 @@ export function AmbientMixer() {
                 max={1}
                 step={0.01}
                 value={[state[key]]}
-                onValueChange={([v]) => setState((s) => ({ ...s, [key]: v }))}
+                onValueChange={([v]) => ambientStore.setVolume(key, v)}
               />
             </div>
           ))}

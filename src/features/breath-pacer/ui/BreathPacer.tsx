@@ -17,7 +17,7 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
   const [progress, setProgress] = useState(0); // 0..1 for current phase
-  const [cycleTotalMs, setCycleMs] = useState((inhaleSec + holdSec + exhaleSec + restSec) * 1000);
+  const [, setCycleMs] = useState((inhaleSec + holdSec + exhaleSec + restSec) * 1000);
   const requestRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
   const phaseTimes = useMemo(
