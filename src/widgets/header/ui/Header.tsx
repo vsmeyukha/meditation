@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TransitionLink } from "@/shared/ui/TransitionLink";
 import { Button } from "@/shared/ui/button";
 import { MenuIcon } from "lucide-react";
 import {
@@ -14,34 +14,37 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full bg-transparent backdrop-blur-sm header-gradient pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between px-6">
-        <Link href="/" className="font-semibold tracking-tight text-aurora">
+        <TransitionLink
+          href="/"
+          className="font-semibold tracking-tight text-aurora"
+        >
           Вдох <span className="mx-2">🫧</span> выдох
-        </Link>
+        </TransitionLink>
         <nav className="hidden gap-4 sm:flex">
-          <Link
+          <TransitionLink
             href="/practice"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
           >
             Practice
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href="/meditation-of-the-day"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
           >
             Today
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href="/topics"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
           >
             Topics
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href="/help"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
           >
             Help
-          </Link>
+          </TransitionLink>
         </nav>
         <div className="flex items-center gap-2 sm:hidden">
           <Sheet>
@@ -59,41 +62,41 @@ export function Header() {
               </SheetHeader>
               <div className="flex flex-col gap-3 p-4">
                 <SheetClose asChild>
-                  <Link
+                  <TransitionLink
                     href="/practice"
                     className="text-base text-[hsl(277_36%_22%)]"
                   >
                     Practice
-                  </Link>
+                  </TransitionLink>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link
+                  <TransitionLink
                     href="/meditation-of-the-day"
                     className="text-base text-[hsl(277_36%_22%)]"
                   >
                     Today
-                  </Link>
+                  </TransitionLink>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link
+                  <TransitionLink
                     href="/topics"
                     className="text-base text-[hsl(277_36%_22%)]"
                   >
                     Topics
-                  </Link>
+                  </TransitionLink>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link
+                  <TransitionLink
                     href="/help"
                     className="text-base text-[hsl(277_36%_22%)]"
                   >
                     Help
-                  </Link>
+                  </TransitionLink>
                 </SheetClose>
                 <div className="pt-2">
                   <SheetClose asChild>
                     <Button variant="outline" asChild className="w-full">
-                      <Link href="/signin">Sign in</Link>
+                      <TransitionLink href="/signin">Sign in</TransitionLink>
                     </Button>
                   </SheetClose>
                 </div>
@@ -103,7 +106,7 @@ export function Header() {
         </div>
         <div className="hidden items-center gap-2 sm:flex">
           <Button variant="outline" size="sm" asChild>
-            <Link href="/signin">Sign in</Link>
+            <TransitionLink href="/signin">Sign in</TransitionLink>
           </Button>
         </div>
       </div>

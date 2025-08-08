@@ -109,19 +109,6 @@ export function PageTransition() {
         `}
       />
 
-      {/* Debug indicator - temporary */}
-      <div
-        className={`
-          absolute top-8 left-8 z-10
-          bg-red-600 text-white px-4 py-2 rounded
-          font-bold text-sm
-          transition-opacity duration-300
-          ${isVisible ? "opacity-100" : "opacity-0"}
-        `}
-      >
-        TRANSITION ACTIVE
-      </div>
-
       {/* Overall blur overlay */}
       <div
         className={`
