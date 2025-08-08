@@ -34,6 +34,17 @@ export function MoodCheckin() {
   const [logs, setLogs] = useState<MoodLogEntry[]>([]);
   const [isClient, setIsClient] = useState(false);
 
+  // Helper functions to translate values to Russian
+  const getMoodLabel = (mood: Mood): string => {
+    const moodItem = moods.find((m) => m.value === mood);
+    return moodItem ? moodItem.label : mood;
+  };
+
+  const getEnergyLabel = (energy: Energy): string => {
+    const energyItem = energies.find((e) => e.value === energy);
+    return energyItem ? energyItem.label : energy;
+  };
+
   // Load logs from localStorage only on client side to prevent hydration mismatch
   useEffect(() => {
     setIsClient(true);
@@ -173,7 +184,8 @@ export function MoodCheckin() {
           <div className="flex flex-wrap gap-2">
             {logs.slice(0, 10).map((l) => (
               <Badge key={l.id} variant="secondary">
-                {new Date(l.date).toLocaleDateString()} · {l.mood}/{l.energy}
+                {new Date(l.date).toLocaleDateString()} · {getMoodLabel(l.mood)}
+                /{getEnergyLabel(l.energy)}
               </Badge>
             ))}
           </div>
