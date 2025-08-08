@@ -42,7 +42,7 @@ export function FloatingAmbientButton() {
       el.style.right = `${nx}px`
       el.style.bottom = `${ny}px`
     }
-    function onEnd(e: MouseEvent | TouchEvent) {
+    function onEnd() {
       dragging = false
       const rect = el.getBoundingClientRect()
       const out = rect.right < 0 || rect.left > window.innerWidth || rect.top > window.innerHeight || rect.bottom < 0
@@ -80,7 +80,7 @@ export function FloatingAmbientButton() {
       <button
         aria-label="close"
         onClick={() => setVisible(false)}
-        className="hidden md:grid size-8 rounded-full place-items-center bg-white text-zinc-700 border"
+        className="grid size-8 rounded-full place-items-center bg-white text-zinc-700 border"
       >
         <XIcon className="size-4" />
       </button>

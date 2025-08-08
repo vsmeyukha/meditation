@@ -94,8 +94,8 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
   return (
     <div className="flex flex-col items-center gap-6">
       <div
-        className="relative grid place-items-center transition-transform duration-200 ease-out"
-        style={{ width: size, height: size, transform: `scale(${ring.scale})` }}
+        className="relative grid place-items-center transition-transform duration-200 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)]"
+        style={{ transform: `scale(${ring.scale})` }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-200 to-white" />
         <div className="absolute inset-4 rounded-full bg-white shadow-inner" />
