@@ -56,7 +56,7 @@ export function GradientBackground() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 opacity-100 transition-opacity duration-700"
+      className="pointer-events-none fixed inset-0 -z-10 opacity-30 transition-opacity duration-700"
       style={{
         // CSS variables consumed by globals gradient class
         ["--g1" as unknown as string]: c1,

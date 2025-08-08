@@ -12,8 +12,8 @@ import {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full bg-transparent backdrop-blur-sm pt-[env(safe-area-inset-top)]">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
+    <header className="sticky top-0 z-40 w-full bg-transparent backdrop-blur-sm header-gradient pt-[env(safe-area-inset-top)]">
+      <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between px-6">
         <Link href="/" className="font-semibold tracking-tight text-aurora">
           Вдох <span className="mx-2">🫧</span> выдох
         </Link>

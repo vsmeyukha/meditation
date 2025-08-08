@@ -21,8 +21,13 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
+  background-image: url("/main-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Animated spiritual gradient background using CSS variables fed from React */
@@ -88,4 +93,44 @@ body {
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Header animated gradient */
+@keyframes headerGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.header-gradient {
+  position: relative;
+}
+
+.header-gradient::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    rgba(108, 43, 142, 0.2),
+    rgba(67, 56, 202, 0.15),
+    rgba(126, 34, 206, 0.22),
+    rgba(91, 33, 182, 0.18),
+    rgba(108, 43, 142, 0.2)
+  );
+  background-size: 300% 100%;
+  animation: headerGradientShift 8s ease-in-out infinite;
+  mask: linear-gradient(180deg, white 0%, white 60%, transparent 100%);
+  -webkit-mask: linear-gradient(180deg, white 0%, white 60%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
 }

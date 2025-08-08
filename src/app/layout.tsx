@@ -37,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased pb-[env(safe-area-inset-bottom)]`}
       >
-        <GradientBackground />
+        {/* <GradientBackground /> */}
         <Header />
         {children}
         <FloatingAmbientButton />
