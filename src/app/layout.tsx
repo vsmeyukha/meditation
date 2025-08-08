@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/shared/ui/sonner";
 import { Header } from "@/widgets/header/ui/Header";
 import { FloatingAmbientButton } from "@/shared/ui/floating-player/FloatingAmbientButton";
+import { GradientBackground } from "@/shared/ui/GradientBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <GradientBackground />
         <Header />
         {children}
         <FloatingAmbientButton />

@@ -4,7 +4,7 @@ import { Button } from "@/shared/ui/button";
 
 export default function MeditationOfTheDayPage() {
   return (
-    <main className="min-h-svh bg-gradient-to-b from-zinc-50 to-white text-zinc-900">
+    <main className="min-h-svh text-zinc-900">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>

@@ -3,7 +3,7 @@ import { Button } from "@/shared/ui/button";
 
 export default function Home() {
   return (
-    <main className="min-h-svh bg-gradient-to-b from-zinc-50 to-white text-zinc-900">
+    <main className="min-h-svh text-zinc-900">
       <section className="mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 py-16 text-center sm:py-20">
         <div className="inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-sm text-zinc-600 ring-1 ring-zinc-200 backdrop-blur">
           Daily calm for a clearer mind
