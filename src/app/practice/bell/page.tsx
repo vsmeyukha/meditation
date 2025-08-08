@@ -3,11 +3,11 @@ import { MindfulBell } from "@/features/mindful-bell/ui/MindfulBell";
 
 export default function BellPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>Mindful Bell Timer</CardTitle>
+            <CardTitle className="text-aurora">Mindful Bell Timer</CardTitle>
           </CardHeader>
           <CardContent>
             <MindfulBell />

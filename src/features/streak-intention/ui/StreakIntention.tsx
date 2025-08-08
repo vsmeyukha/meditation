@@ -24,13 +24,15 @@ export function StreakIntention() {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <div className="text-xs text-zinc-600">Daily intention</div>
+        <div className="text-xs text-[hsl(277_36%_22%)]/70">
+          Daily intention
+        </div>
         <Input
           value={intention}
           onChange={(e) => setIntention(e.target.value)}
         />
       </div>
-      <div className="text-sm text-zinc-700">Current streak</div>
+      <div className="text-sm text-[hsl(277_36%_22%)]/85">Current streak</div>
       <Badge variant="secondary">
         {streak.streakDays} day{streak.streakDays === 1 ? "" : "s"}
       </Badge>

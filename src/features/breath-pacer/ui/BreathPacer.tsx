@@ -116,7 +116,7 @@ export function BreathPacer({
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-200 to-white" />
         <div className="absolute inset-4 rounded-full bg-white shadow-inner" />
         <div className="relative z-10 text-center">
-          <div className="text-xs uppercase tracking-wide text-zinc-500">
+          <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/60">
             Phase
           </div>
           <div className="text-2xl font-semibold capitalize">{phase}</div>
@@ -124,7 +124,7 @@ export function BreathPacer({
       </div>
 
       <div className="w-full max-w-md space-y-3">
-        <div className="grid grid-cols-4 gap-3 text-xs text-zinc-600">
+        <div className="grid grid-cols-4 gap-3 text-xs text-[hsl(277_36%_22%)]/70">
           <div>Inhale: {inhaleSec}s</div>
           <div>Hold: {holdSec}s</div>
           <div>Exhale: {exhaleSec}s</div>

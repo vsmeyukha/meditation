@@ -31,17 +31,23 @@ const tools = [
 
 export default function PracticePage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
-        <h1 className="mb-6 text-3xl font-semibold tracking-tight">Practice</h1>
+        <h1 className="mb-6 text-3xl font-semibold tracking-tight text-aurora">
+          Practice
+        </h1>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((t) => (
             <Link key={t.href} href={t.href} className="block">
               <Card className="h-full transition hover:shadow-sm">
                 <CardHeader>
-                  <CardTitle>{t.title}</CardTitle>
+                  <CardTitle className="text-[hsl(277_36%_22%)]">
+                    {t.title}
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="text-zinc-600">{t.desc}</CardContent>
+                <CardContent className="text-[hsl(277_36%_22%)]/75">
+                  {t.desc}
+                </CardContent>
               </Card>
             </Link>
           ))}

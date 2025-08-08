@@ -2,7 +2,8 @@
 
 :root {
   --background: hsl(0 0% 100%);
-  --foreground: hsl(0 0% 9%);
+  /* Softer, spiritual-tinted ink instead of stark black */
+  --foreground: hsl(277 36% 22%);
 }
 
 .dark {
@@ -45,5 +46,33 @@ body {
   100% {
     transform: translateY(-12px) scale(1.02);
     opacity: 1;
+  }
+}
+
+/* Animated gradient text utility for titles */
+.text-aurora {
+  background-image: linear-gradient(
+    90deg,
+    hsl(270 91% 76%),
+    hsl(318 88% 78%),
+    hsl(230 86% 74%),
+    hsl(270 91% 76%)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: auroraShift 10s ease-in-out infinite;
+}
+
+@keyframes auroraShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

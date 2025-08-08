@@ -54,7 +54,9 @@ export function MindfulBell({
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <div className="text-xs text-zinc-600">Duration (min)</div>
+          <div className="text-xs text-[hsl(277_36%_22%)]/70">
+            Duration (min)
+          </div>
           <Input
             type="number"
             inputMode="numeric"
@@ -64,7 +66,9 @@ export function MindfulBell({
           />
         </div>
         <div className="space-y-2">
-          <div className="text-xs text-zinc-600">Interval bell (min)</div>
+          <div className="text-xs text-[hsl(277_36%_22%)]/70">
+            Interval bell (min)
+          </div>
           <Input
             type="number"
             inputMode="numeric"

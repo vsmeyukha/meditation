@@ -14,11 +14,13 @@ import {
 
 export default function HelpPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>Meditation Tips & Help</CardTitle>
+            <CardTitle className="text-aurora">
+              Meditation Tips & Help
+            </CardTitle>
             <CardDescription>
               Practical guidance for common situations
             </CardDescription>

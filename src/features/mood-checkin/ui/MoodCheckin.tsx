@@ -70,7 +70,7 @@ export function MoodCheckin() {
   return (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm text-zinc-600">Mood</div>
+        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Mood</div>
         <div className="flex flex-wrap gap-2">
           {moods.map((m) => (
             <Button
@@ -84,7 +84,7 @@ export function MoodCheckin() {
         </div>
       </div>
       <div>
-        <div className="mb-2 text-sm text-zinc-600">Energy</div>
+        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Energy</div>
         <div className="flex flex-wrap gap-2">
           {energies.map((e) => (
             <Button
@@ -105,7 +105,7 @@ export function MoodCheckin() {
       </Button>
       {recommendation && (
         <Card>
-          <CardContent className="p-4 text-sm text-zinc-700">
+          <CardContent className="p-4 text-sm text-[hsl(277_36%_22%)]/80">
             Recommended:{" "}
             <a className="underline" href={recommendation.href}>
               {recommendation.title}
@@ -115,7 +115,7 @@ export function MoodCheckin() {
       )}
       {logs.length > 0 && (
         <div className="space-y-2">
-          <div className="text-sm text-zinc-600">Recent</div>
+          <div className="text-sm text-[hsl(277_36%_22%)]/70">Recent</div>
           <div className="flex flex-wrap gap-2">
             {logs.slice(0, 10).map((l) => (
               <Badge key={l.id} variant="secondary">

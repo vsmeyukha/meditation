@@ -25,9 +25,9 @@ const topics = [
 
 export default function TopicsPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
-        <h1 className="mb-6 text-3xl font-semibold tracking-tight">
+        <h1 className="mb-6 text-3xl font-semibold tracking-tight text-aurora">
           Meditations by Topic
         </h1>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -36,7 +36,9 @@ export default function TopicsPage() {
               <Card className="h-full transition hover:shadow-sm">
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <CardTitle>{t.title}</CardTitle>
+                    <CardTitle className="text-[hsl(277_36%_22%)]">
+                      {t.title}
+                    </CardTitle>
                     <Badge
                       variant="secondary"
                       className="hidden sm:inline-flex"
@@ -45,7 +47,9 @@ export default function TopicsPage() {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="text-zinc-600">{t.hint}</CardContent>
+                <CardContent className="text-[hsl(277_36%_22%)]/75">
+                  {t.hint}
+                </CardContent>
               </Card>
             </Link>
           ))}

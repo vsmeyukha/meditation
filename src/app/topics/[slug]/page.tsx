@@ -77,11 +77,11 @@ export default async function TopicPage(props: { params: Params }) {
   if (!topic) return notFound();
 
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>{topic.title}</CardTitle>
+            <CardTitle className="text-aurora">{topic.title}</CardTitle>
             <CardDescription>{topic.description}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -92,7 +92,9 @@ export default async function TopicPage(props: { params: Params }) {
               >
                 <div>
                   <div className="font-medium">{s.title}</div>
-                  <div className="text-sm text-zinc-600">{s.minutes} min</div>
+                  <div className="text-sm text-[hsl(277_36%_22%)]/70">
+                    {s.minutes} min
+                  </div>
                 </div>
                 <Button size="sm" asChild>
                   <Link href="/practice/breath">Begin</Link>

@@ -3,11 +3,11 @@ import { BreathPacer } from "@/features/breath-pacer/ui/BreathPacer";
 
 export default function BreathPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>Breath Pacer</CardTitle>
+            <CardTitle className="text-aurora">Breath Pacer</CardTitle>
           </CardHeader>
           <CardContent>
             <BreathPacer />

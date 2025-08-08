@@ -16,7 +16,7 @@ export function AmbientMixer() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <div className="text-sm text-zinc-700">Enable ambient</div>
+        <div className="text-sm text-[hsl(277_36%_22%)]/85">Enable ambient</div>
         <Switch
           checked={state.enabled}
           onCheckedChange={(v) => ambientStore.setEnabled(v)}
@@ -25,7 +25,7 @@ export function AmbientMixer() {
       <Card>
         <CardContent className="p-4 space-y-4">
           <div className="flex justify-between items-center">
-            <div className="text-sm text-zinc-700">
+            <div className="text-sm text-[hsl(277_36%_22%)]/85">
               Status: {state.enabled ? "Playing" : "Paused"}
             </div>
             {!state.enabled ? (
@@ -48,7 +48,7 @@ export function AmbientMixer() {
             { key: "bowls" as const, label: "Singing bowls" },
           ].map(({ key, label }) => (
             <div key={key} className="space-y-2">
-              <div className="flex justify-between text-xs text-zinc-600">
+              <div className="flex justify-between text-xs text-[hsl(277_36%_22%)]/70">
                 <span>{label}</span>
                 <span>{Math.round(state[key] * 100)}%</span>
               </div>

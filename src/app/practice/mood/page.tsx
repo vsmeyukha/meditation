@@ -3,11 +3,11 @@ import { MoodCheckin } from "@/features/mood-checkin/ui/MoodCheckin";
 
 export default function MoodPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>Mood Check‑in</CardTitle>
+            <CardTitle className="text-aurora">Mood Check‑in</CardTitle>
           </CardHeader>
           <CardContent>
             <MoodCheckin />

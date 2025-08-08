@@ -10,15 +10,15 @@ import { Button } from "@/shared/ui/button";
 
 export default function MeditationOfTheDayPage() {
   return (
-    <main className="min-h-svh text-zinc-900">
+    <main className="min-h-svh">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle>Today’s Meditation</CardTitle>
+            <CardTitle className="text-aurora">Today’s Meditation</CardTitle>
             <CardDescription>Grounding breath and awareness</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-zinc-700">
+            <p className="text-[hsl(277_36%_22%)]/75">
               A 10-minute guided practice to soften tension and return to
               presence. Find a comfortable seat, close your eyes, and follow the
               breath.

@@ -83,14 +83,14 @@ export function FloatingAmbientButton() {
       <button
         aria-label="pause ambient"
         onClick={() => ambientStore.setEnabled(false)}
-        className="size-12 rounded-full grid place-items-center shadow-lg bg-zinc-900 text-white"
+        className="size-12 rounded-full grid place-items-center shadow-lg bg-[hsl(277_36%_22%)] text-white/95"
       >
         <PauseIcon className="size-6" />
       </button>
       <button
         aria-label="close"
         onClick={() => setVisible(false)}
-        className="grid size-8 rounded-full place-items-center bg-white text-zinc-700 border"
+        className="grid size-8 rounded-full place-items-center bg-white text-[hsl(277_36%_22%)]/80 border"
       >
         <XIcon className="size-4" />
       </button>
