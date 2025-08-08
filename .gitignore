@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large audio files (temporarily excluded)
+public/ambient/*.mp3
+public/ambient/*.wav
