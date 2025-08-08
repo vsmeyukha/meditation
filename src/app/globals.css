@@ -16,6 +16,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Custom animation tokens */
+  --animate-gradient-x: gradientX 5s ease infinite;
 }
 
 body {
@@ -46,6 +48,17 @@ body {
   100% {
     transform: translateY(-12px) scale(1.02);
     opacity: 1;
+  }
+}
+
+/* Gradient X animation (for buttons/accents) */
+@keyframes gradientX {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
