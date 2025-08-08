@@ -40,12 +40,18 @@ function Slider({
         data-slot="slider-track"
         className={cn(
           "bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5",
+          // Better visibility for ambient mixer
+          className?.includes("purple-slider") &&
+            "bg-gray-200 border border-gray-300/50",
         )}
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
           className={cn(
             "bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
+            // Purple styling for ambient mixer
+            className?.includes("purple-slider") &&
+              "bg-gradient-to-r from-purple-400 to-purple-500",
           )}
         />
       </SliderPrimitive.Track>
@@ -53,7 +59,12 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
-          className="border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+          className={cn(
+            "border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50",
+            // Purple styling for ambient mixer
+            className?.includes("purple-slider") &&
+              "border-purple-400 bg-white ring-purple-200/50 hover:ring-purple-300/50 focus-visible:ring-purple-300/50",
+          )}
         />
       ))}
     </SliderPrimitive.Root>

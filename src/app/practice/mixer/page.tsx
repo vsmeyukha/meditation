@@ -7,7 +7,7 @@ export default function MixerPage() {
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle className="text-aurora">Ambient Sound Mixer</CardTitle>
+            <CardTitle>Эмбиент</CardTitle>
           </CardHeader>
           <CardContent>
             <AmbientMixer />

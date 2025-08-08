@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { ambientStore } from "@/shared/lib/ambientStore";
-import { XIcon, PauseIcon } from "lucide-react";
+import { XIcon, PauseIcon, PlayIcon } from "lucide-react";
 
 function isTouch() {
   return (
@@ -11,13 +12,23 @@ function isTouch() {
 }
 
 export function FloatingAmbientButton() {
+  const pathname = usePathname();
   const state = useSyncExternalStore(
     (cb) => ambientStore.subscribe(cb),
     () => ambientStore.getState(),
     () => ambientStore.getState(),
   );
   const [visible, setVisible] = useState(true);
+  const [isClient, setIsClient] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+
+  // Hide on mixer page since it has its own controls
+  const isOnMixerPage = pathname === "/practice/mixer";
+
+  // Load state only on client side to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -72,7 +83,34 @@ export function FloatingAmbientButton() {
     };
   }, []);
 
-  if (!state.enabled || !visible) return null;
+  // Don't render during SSR to prevent hydration mismatch
+  if (!isClient) return null;
+
+  // Don't show if on mixer page (it has its own controls)
+  if (isOnMixerPage) return null;
+
+  // Don't show if user explicitly closed it
+  if (!visible) return null;
+
+  // Show the button if:
+  // 1. Music is currently playing, OR
+  // 2. Music was paused but has been started before (any volume > 0)
+  const hasAnyVolume = state.rain > 0 || state.stream > 0 || state.bowls > 0;
+  const shouldShow = state.enabled || hasAnyVolume;
+
+  // Temporary debugging
+  console.log("FloatingButton Debug:", {
+    pathname,
+    isClient,
+    visible,
+    isOnMixerPage,
+    enabled: state.enabled,
+    volumes: { rain: state.rain, stream: state.stream, bowls: state.bowls },
+    hasAnyVolume,
+    shouldShow,
+  });
+
+  if (!shouldShow) return null;
 
   return (
     <div
@@ -81,15 +119,22 @@ export function FloatingAmbientButton() {
       style={{ right: 16, bottom: 24 }}
     >
       <button
-        aria-label="pause ambient"
-        onClick={() => ambientStore.setEnabled(false)}
+        aria-label={state.enabled ? "pause ambient" : "play ambient"}
+        onClick={() => ambientStore.setEnabled(!state.enabled)}
         className="size-12 rounded-full grid place-items-center shadow-lg bg-[hsl(277_36%_22%)] text-white/95"
       >
-        <PauseIcon className="size-6" />
+        {state.enabled ? (
+          <PauseIcon className="size-6" />
+        ) : (
+          <PlayIcon className="size-6 ml-0.5" />
+        )}
       </button>
       <button
         aria-label="close"
-        onClick={() => setVisible(false)}
+        onClick={() => {
+          ambientStore.setEnabled(false);
+          setVisible(false);
+        }}
         className="grid size-8 rounded-full place-items-center bg-white text-[hsl(277_36%_22%)]/80 border"
       >
         <XIcon className="size-4" />
