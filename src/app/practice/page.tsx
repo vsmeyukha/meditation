@@ -10,12 +10,12 @@ const tools = [
   {
     href: "/practice/mood",
     title: "Настроение",
-    desc: "2-tap journal → recommendations",
+    desc: "Дневник и рекомендации",
   },
   // {
   //   href: "/practice/bell",
-  //   title: "Mindful Bell Timer",
-  //   desc: "Interval bells and end chime",
+  //   title: "Осознанный колокол",
+  //   desc: "Интервальные звонки и финальный сигнал",
   // },
   {
     href: "/practice/mixer",
