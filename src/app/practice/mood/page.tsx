@@ -7,7 +7,7 @@ export default function MoodPage() {
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle className="text-aurora">Mood Check‑in</CardTitle>
+            <CardTitle>Проверка настроения</CardTitle>
           </CardHeader>
           <CardContent>
             <MoodCheckin />

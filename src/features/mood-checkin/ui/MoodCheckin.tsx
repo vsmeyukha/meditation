@@ -1,7 +1,8 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { Textarea } from "@/shared/ui/textarea";
 import {
   storageKeys,
   writeLocalStorage,
@@ -13,13 +14,35 @@ import { Badge } from "@/shared/ui/badge";
 type Mood = MoodLogEntry["mood"];
 type Energy = MoodLogEntry["energy"];
 
-const moods: Mood[] = ["bad", "okay", "good", "great"];
-const energies: Energy[] = ["low", "medium", "high"];
+const moods: { value: Mood; label: string }[] = [
+  { value: "bad", label: "Плохо" },
+  { value: "okay", label: "Нормально" },
+  { value: "good", label: "Хорошо" },
+  { value: "great", label: "Отлично" },
+];
+
+const energies: { value: Energy; label: string }[] = [
+  { value: "low", label: "Низкая" },
+  { value: "medium", label: "Средняя" },
+  { value: "high", label: "Высокая" },
+];
 
 export function MoodCheckin() {
   const [mood, setMood] = useState<Mood | null>(null);
   const [energy, setEnergy] = useState<Energy | null>(null);
-  const logs = readLocalStorage<MoodLogEntry[]>(storageKeys.moodLogs, []);
+  const [moodDescription, setMoodDescription] = useState("");
+  const [logs, setLogs] = useState<MoodLogEntry[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  // Load logs from localStorage only on client side to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    const savedLogs = readLocalStorage<MoodLogEntry[]>(
+      storageKeys.moodLogs,
+      [],
+    );
+    setLogs(savedLogs);
+  }, []);
 
   function submit() {
     if (!mood || !energy) return;
@@ -29,7 +52,9 @@ export function MoodCheckin() {
       mood,
       energy,
     };
-    writeLocalStorage(storageKeys.moodLogs, [entry, ...logs].slice(0, 50));
+    const newLogs = [entry, ...logs].slice(0, 50);
+    writeLocalStorage(storageKeys.moodLogs, newLogs);
+    setLogs(newLogs); // Update local state
   }
 
   async function generate() {
@@ -57,65 +82,94 @@ export function MoodCheckin() {
   const recommendation = useMemo(() => {
     if (!mood || !energy) return null;
     if (mood === "bad" && energy === "high")
-      return { title: "Calming breath", href: "/topics/anxiety" };
+      return { title: "Успокаивающее дыхание", href: "/topics/anxiety" };
     if (mood === "bad" && energy === "low")
-      return { title: "Gentle activation", href: "/topics/apathy" };
+      return { title: "Мягкая активация", href: "/topics/apathy" };
     if (mood === "okay" && energy !== "high")
-      return { title: "Body scan", href: "/meditation-of-the-day" };
+      return { title: "Сканирование тела", href: "/meditation-of-the-day" };
     if (mood === "good" && energy === "high")
-      return { title: "Focus practice", href: "/topics/focus" };
-    return { title: "Self-compassion", href: "/topics/self-compassion" };
+      return { title: "Практика концентрации", href: "/topics/focus" };
+    return { title: "Самосострадание", href: "/topics/self-compassion" };
   }, [mood, energy]);
 
   return (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Mood</div>
+        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">
+          Настроение
+        </div>
         <div className="flex flex-wrap gap-2">
           {moods.map((m) => (
             <Button
-              key={m}
-              variant={mood === m ? "default" : "outline"}
-              onClick={() => setMood(m)}
+              key={m.value}
+              variant={mood === m.value ? "default" : "outline"}
+              onClick={() => setMood(m.value)}
             >
-              {m}
+              {m.label}
             </Button>
           ))}
         </div>
       </div>
+
       <div>
-        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Energy</div>
+        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Энергия</div>
         <div className="flex flex-wrap gap-2">
           {energies.map((e) => (
             <Button
-              key={e}
-              variant={energy === e ? "default" : "outline"}
-              onClick={() => setEnergy(e)}
+              key={e.value}
+              variant={energy === e.value ? "default" : "outline"}
+              onClick={() => setEnergy(e.value)}
             >
-              {e}
+              {e.label}
             </Button>
           ))}
         </div>
       </div>
-      <Button onClick={submit} disabled={!mood || !energy}>
-        Save Check‑in
-      </Button>
-      <Button variant="outline" onClick={generate} disabled={!mood || !energy}>
-        Generate guidance
-      </Button>
+
+      <div>
+        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">
+          Опишите ваше настроение своими словами
+        </div>
+        <Textarea
+          placeholder="Как вы себя чувствуете? Что происходит в вашей душе?"
+          value={moodDescription}
+          onChange={(e) => setMoodDescription(e.target.value)}
+          className="min-h-[80px] resize-none"
+        />
+        <div className="mt-2 text-xs text-[hsl(277_36%_22%)]/50">
+          Теги: спокойствие, тревога, радость, усталость, вдохновение, грусть
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Button onClick={submit} disabled={!mood || !energy}>
+          Сохранить
+        </Button>
+        <Button
+          variant="outline"
+          onClick={generate}
+          disabled={!mood || !energy}
+        >
+          Получить рекомендации
+        </Button>
+      </div>
+
       {recommendation && (
         <Card>
           <CardContent className="p-4 text-sm text-[hsl(277_36%_22%)]/80">
-            Recommended:{" "}
+            Рекомендация:{" "}
             <a className="underline" href={recommendation.href}>
               {recommendation.title}
             </a>
           </CardContent>
         </Card>
       )}
-      {logs.length > 0 && (
+
+      {isClient && logs.length > 0 && (
         <div className="space-y-2">
-          <div className="text-sm text-[hsl(277_36%_22%)]/70">Recent</div>
+          <div className="text-sm text-[hsl(277_36%_22%)]/70">
+            Недавние записи
+          </div>
           <div className="flex flex-wrap gap-2">
             {logs.slice(0, 10).map((l) => (
               <Badge key={l.id} variant="secondary">
