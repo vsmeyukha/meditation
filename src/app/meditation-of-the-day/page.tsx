@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
 export default function MeditationOfTheDayPage() {
@@ -13,7 +19,9 @@ export default function MeditationOfTheDayPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <p className="text-zinc-700">
-              A 10-minute guided practice to soften tension and return to presence. Find a comfortable seat, close your eyes, and follow the breath.
+              A 10-minute guided practice to soften tension and return to
+              presence. Find a comfortable seat, close your eyes, and follow the
+              breath.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
@@ -29,5 +37,3 @@ export default function MeditationOfTheDayPage() {
     </main>
   );
 }
-
-

@@ -2,7 +2,12 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { storageKeys, writeLocalStorage, readLocalStorage, MoodLogEntry } from "@/shared/lib/storage";
+import {
+  storageKeys,
+  writeLocalStorage,
+  readLocalStorage,
+  MoodLogEntry,
+} from "@/shared/lib/storage";
 import { Badge } from "@/shared/ui/badge";
 
 type Mood = MoodLogEntry["mood"];
@@ -51,10 +56,14 @@ export function MoodCheckin() {
 
   const recommendation = useMemo(() => {
     if (!mood || !energy) return null;
-    if (mood === "bad" && energy === "high") return { title: "Calming breath", href: "/topics/anxiety" };
-    if (mood === "bad" && energy === "low") return { title: "Gentle activation", href: "/topics/apathy" };
-    if (mood === "okay" && energy !== "high") return { title: "Body scan", href: "/meditation-of-the-day" };
-    if (mood === "good" && energy === "high") return { title: "Focus practice", href: "/topics/focus" };
+    if (mood === "bad" && energy === "high")
+      return { title: "Calming breath", href: "/topics/anxiety" };
+    if (mood === "bad" && energy === "low")
+      return { title: "Gentle activation", href: "/topics/apathy" };
+    if (mood === "okay" && energy !== "high")
+      return { title: "Body scan", href: "/meditation-of-the-day" };
+    if (mood === "good" && energy === "high")
+      return { title: "Focus practice", href: "/topics/focus" };
     return { title: "Self-compassion", href: "/topics/self-compassion" };
   }, [mood, energy]);
 
@@ -64,7 +73,11 @@ export function MoodCheckin() {
         <div className="mb-2 text-sm text-zinc-600">Mood</div>
         <div className="flex flex-wrap gap-2">
           {moods.map((m) => (
-            <Button key={m} variant={mood === m ? "default" : "outline"} onClick={() => setMood(m)}>
+            <Button
+              key={m}
+              variant={mood === m ? "default" : "outline"}
+              onClick={() => setMood(m)}
+            >
               {m}
             </Button>
           ))}
@@ -74,7 +87,11 @@ export function MoodCheckin() {
         <div className="mb-2 text-sm text-zinc-600">Energy</div>
         <div className="flex flex-wrap gap-2">
           {energies.map((e) => (
-            <Button key={e} variant={energy === e ? "default" : "outline"} onClick={() => setEnergy(e)}>
+            <Button
+              key={e}
+              variant={energy === e ? "default" : "outline"}
+              onClick={() => setEnergy(e)}
+            >
               {e}
             </Button>
           ))}
@@ -89,7 +106,10 @@ export function MoodCheckin() {
       {recommendation && (
         <Card>
           <CardContent className="p-4 text-sm text-zinc-700">
-            Recommended: <a className="underline" href={recommendation.href}>{recommendation.title}</a>
+            Recommended:{" "}
+            <a className="underline" href={recommendation.href}>
+              {recommendation.title}
+            </a>
           </CardContent>
         </Card>
       )}
@@ -108,5 +128,3 @@ export function MoodCheckin() {
     </div>
   );
 }
-
-

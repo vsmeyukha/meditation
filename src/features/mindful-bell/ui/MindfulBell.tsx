@@ -9,7 +9,10 @@ interface MindfulBellProps {
   defaultIntervalMin?: number;
 }
 
-export function MindfulBell({ defaultMinutes = 10, defaultIntervalMin = 3 }: MindfulBellProps) {
+export function MindfulBell({
+  defaultMinutes = 10,
+  defaultIntervalMin = 3,
+}: MindfulBellProps) {
   const [minutes, setMinutes] = useState(defaultMinutes);
   const [intervalMin, setIntervalMin] = useState(defaultIntervalMin);
   const [running, setRunning] = useState(false);
@@ -52,7 +55,13 @@ export function MindfulBell({ defaultMinutes = 10, defaultIntervalMin = 3 }: Min
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
           <div className="text-xs text-zinc-600">Duration (min)</div>
-          <Input type="number" inputMode="numeric" min={1} value={minutes} onChange={(e) => setMinutes(parseInt(e.target.value || "1"))} />
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={1}
+            value={minutes}
+            onChange={(e) => setMinutes(parseInt(e.target.value || "1"))}
+          />
         </div>
         <div className="space-y-2">
           <div className="text-xs text-zinc-600">Interval bell (min)</div>
@@ -75,5 +84,3 @@ export function MindfulBell({ defaultMinutes = 10, defaultIntervalMin = 3 }: Min
     </div>
   );
 }
-
-

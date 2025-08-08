@@ -4,5 +4,3 @@ export const appRoutes = {
   topics: "/topics",
   help: "/help",
 } as const;
-
-

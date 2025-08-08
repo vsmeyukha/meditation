@@ -13,11 +13,18 @@ interface BreathPacerProps {
   restSec?: number;
 }
 
-export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec = 2 }: BreathPacerProps) {
+export function BreathPacer({
+  inhaleSec = 4,
+  holdSec = 4,
+  exhaleSec = 6,
+  restSec = 2,
+}: BreathPacerProps) {
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
   const [progress, setProgress] = useState(0); // 0..1 for current phase
-  const [, setCycleMs] = useState((inhaleSec + holdSec + exhaleSec + restSec) * 1000);
+  const [, setCycleMs] = useState(
+    (inhaleSec + holdSec + exhaleSec + restSec) * 1000,
+  );
   const requestRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
   const phaseTimes = useMemo(
@@ -27,11 +34,13 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
       exhale: exhaleSec * 1000,
       rest: restSec * 1000,
     }),
-    [inhaleSec, holdSec, exhaleSec, restSec]
+    [inhaleSec, holdSec, exhaleSec, restSec],
   );
 
   useEffect(() => {
-    setCycleMs(phaseTimes.inhale + phaseTimes.hold + phaseTimes.exhale + phaseTimes.rest);
+    setCycleMs(
+      phaseTimes.inhale + phaseTimes.hold + phaseTimes.exhale + phaseTimes.rest,
+    );
   }, [phaseTimes]);
 
   useEffect(() => {
@@ -84,7 +93,14 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
 
   const size = 220;
   const ring = useMemo(() => {
-    const p = phase === "inhale" ? progress : phase === "hold" ? 1 : phase === "exhale" ? 1 - progress : 0.05;
+    const p =
+      phase === "inhale"
+        ? progress
+        : phase === "hold"
+          ? 1
+          : phase === "exhale"
+            ? 1 - progress
+            : 0.05;
     const min = 0.6;
     const max = 1.0;
     const scale = min + (max - min) * p;
@@ -100,7 +116,9 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-200 to-white" />
         <div className="absolute inset-4 rounded-full bg-white shadow-inner" />
         <div className="relative z-10 text-center">
-          <div className="text-xs uppercase tracking-wide text-zinc-500">Phase</div>
+          <div className="text-xs uppercase tracking-wide text-zinc-500">
+            Phase
+          </div>
           <div className="text-2xl font-semibold capitalize">{phase}</div>
         </div>
       </div>
@@ -126,5 +144,3 @@ export function BreathPacer({ inhaleSec = 4, holdSec = 4, exhaleSec = 6, restSec
     </div>
   );
 }
-
-

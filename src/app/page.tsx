@@ -12,7 +12,9 @@ export default function Home() {
           Meditation for a lighter, spiritual day
         </h1>
         <p className="text-pretty max-w-2xl text-zinc-600">
-          Breathe, ground, and gently return to yourself. Explore the meditation of the day, themed sessions, and practical tips for anxiety, apathy, and more.
+          Breathe, ground, and gently return to yourself. Explore the meditation
+          of the day, themed sessions, and practical tips for anxiety, apathy,
+          and more.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild>

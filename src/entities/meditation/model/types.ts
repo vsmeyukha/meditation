@@ -6,5 +6,3 @@ export interface Meditation {
   description?: string;
   audioUrl?: string;
 }
-
-

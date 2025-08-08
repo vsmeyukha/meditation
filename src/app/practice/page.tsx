@@ -2,11 +2,31 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
 const tools = [
-  { href: "/practice/breath", title: "Breath Pacer", desc: "Inhale / Hold / Exhale guidance" },
-  { href: "/practice/mood", title: "Mood Check‑in", desc: "2-tap journal → recommendations" },
-  { href: "/practice/bell", title: "Mindful Bell Timer", desc: "Interval bells and end chime" },
-  { href: "/practice/mixer", title: "Ambient Sound Mixer", desc: "Rain, stream, bowls" },
-  { href: "/practice/streak", title: "Streak + Intention", desc: "Simple, privacy-first" },
+  {
+    href: "/practice/breath",
+    title: "Breath Pacer",
+    desc: "Inhale / Hold / Exhale guidance",
+  },
+  {
+    href: "/practice/mood",
+    title: "Mood Check‑in",
+    desc: "2-tap journal → recommendations",
+  },
+  {
+    href: "/practice/bell",
+    title: "Mindful Bell Timer",
+    desc: "Interval bells and end chime",
+  },
+  {
+    href: "/practice/mixer",
+    title: "Ambient Sound Mixer",
+    desc: "Rain, stream, bowls",
+  },
+  {
+    href: "/practice/streak",
+    title: "Streak + Intention",
+    desc: "Simple, privacy-first",
+  },
 ];
 
 export default function PracticePage() {
@@ -30,5 +50,3 @@ export default function PracticePage() {
     </main>
   );
 }
-
-

@@ -5,15 +5,36 @@ import { usePathname } from "next/navigation";
 type Palette = [string, string, string, string?];
 
 const palettes: Palette[] = [
-  ["hsl(258 91% 66%)", "hsl(271 83% 64%)", "hsl(230 76% 58%)", "hsl(250 80% 60%)"],
-  ["hsl(268 87% 68%)", "hsl(290 72% 62%)", "hsl(220 72% 54%)", "hsl(240 80% 58%)"],
-  ["hsl(255 85% 65%)", "hsl(275 78% 62%)", "hsl(225 70% 56%)", "hsl(260 70% 60%)"],
-  ["hsl(245 80% 64%)", "hsl(265 80% 60%)", "hsl(210 72% 52%)", "hsl(235 72% 56%)"],
+  [
+    "hsl(258 91% 66%)",
+    "hsl(271 83% 64%)",
+    "hsl(230 76% 58%)",
+    "hsl(250 80% 60%)",
+  ],
+  [
+    "hsl(268 87% 68%)",
+    "hsl(290 72% 62%)",
+    "hsl(220 72% 54%)",
+    "hsl(240 80% 58%)",
+  ],
+  [
+    "hsl(255 85% 65%)",
+    "hsl(275 78% 62%)",
+    "hsl(225 70% 56%)",
+    "hsl(260 70% 60%)",
+  ],
+  [
+    "hsl(245 80% 64%)",
+    "hsl(265 80% 60%)",
+    "hsl(210 72% 52%)",
+    "hsl(235 72% 56%)",
+  ],
 ];
 
 function choosePalette(seed: string): Palette {
   let acc = 0;
-  for (let i = 0; i < seed.length; i++) acc = (acc * 31 + seed.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < seed.length; i++)
+    acc = (acc * 31 + seed.charCodeAt(i)) >>> 0;
   const p = palettes[acc % palettes.length];
   return p;
 }
@@ -27,7 +48,10 @@ export function GradientBackground() {
     setTick((t) => t + 1);
   }, [pathname]);
 
-  const [c1, c2, c3, c4] = useMemo(() => choosePalette(pathname || "/"), [pathname]);
+  const [c1, c2, c3, c4] = useMemo(
+    () => choosePalette(pathname || "/"),
+    [pathname],
+  );
 
   return (
     <div
@@ -47,5 +71,3 @@ export function GradientBackground() {
     </div>
   );
 }
-
-

@@ -1,9 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
-const content: Record<string, { title: string; description: string; sessions: { title: string; minutes: number }[] }> = {
+const content: Record<
+  string,
+  {
+    title: string;
+    description: string;
+    sessions: { title: string; minutes: number }[];
+  }
+> = {
   anxiety: {
     title: "Anxiety Relief",
     description: "Calming, grounding practices to soothe the nervous system.",
@@ -73,7 +86,10 @@ export default async function TopicPage(props: { params: Params }) {
           </CardHeader>
           <CardContent className="space-y-4">
             {topic.sessions.map((s) => (
-              <div key={s.title} className="flex items-center justify-between rounded-md border p-4">
+              <div
+                key={s.title}
+                className="flex items-center justify-between rounded-md border p-4"
+              >
                 <div>
                   <div className="font-medium">{s.title}</div>
                   <div className="text-sm text-zinc-600">{s.minutes} min</div>
@@ -89,5 +105,3 @@ export default async function TopicPage(props: { params: Params }) {
     </main>
   );
 }
-
-

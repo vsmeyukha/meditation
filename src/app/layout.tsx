@@ -34,7 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased pb-[env(safe-area-inset-bottom)]`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased pb-[env(safe-area-inset-bottom)]`}
+      >
         <GradientBackground />
         <Header />
         {children}

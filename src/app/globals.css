@@ -24,10 +24,15 @@ body {
 
 /* Animated spiritual gradient background using CSS variables fed from React */
 .bg-animated-gradient {
-  background: radial-gradient(120% 80% at 30% 0%, var(--g1) 0%, transparent 60%),
+  background:
+    radial-gradient(120% 80% at 30% 0%, var(--g1) 0%, transparent 60%),
     radial-gradient(120% 80% at 120% 10%, var(--g2) 0%, transparent 60%),
     radial-gradient(120% 80% at 50% 100%, var(--g3) 0%, transparent 65%),
-    linear-gradient(180deg, color-mix(in oklab, var(--g4), white 12%) 0%, color-mix(in oklab, var(--g2), black 6%) 100%);
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--g4), white 12%) 0%,
+      color-mix(in oklab, var(--g2), black 6%) 100%
+    );
   filter: saturate(1.05) contrast(1.02);
   animation: gradientFloat 24s ease-in-out infinite alternate;
 }

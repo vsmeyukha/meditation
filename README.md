@@ -3,6 +3,7 @@
 A light, spiritual meditation app built with Next.js 15, React 19, TypeScript, Tailwind v4, and shadcn/ui. Follows feature-sliced design (FSD).
 
 ## Tech
+
 - Next.js 15 (App Router)
 - React 19
 - TypeScript (strict)
@@ -10,12 +11,14 @@ A light, spiritual meditation app built with Next.js 15, React 19, TypeScript, T
 - shadcn/ui (new-york style)
 
 ## Scripts
+
 - `npm run dev` – start dev server
 - `npm run build` – production build
 - `npm run start` – start production server
 - `npm run lint` – lint
 
 ## Structure (FSD)
+
 ```
 src/
   app/                # routes, layouts, pages
@@ -34,6 +37,7 @@ src/
 ```
 
 ## Routes
+
 - `/` – Landing
 - `/meditation-of-the-day` – Daily practice
 - `/topics` – Topic index
@@ -41,5 +45,6 @@ src/
 - `/help` – Tips & FAQ
 
 ## Notes
+
 - Tailwind v4 uses `@import "tailwindcss"` and `@theme inline` in `src/app/globals.css`.
 - shadcn components are installed into `src/shared/ui` and can be imported like `@/shared/ui/button`.

@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
 interface DailyMeditationCardProps {
@@ -6,7 +12,10 @@ interface DailyMeditationCardProps {
   description: string;
 }
 
-export function DailyMeditationCard({ title, description }: DailyMeditationCardProps) {
+export function DailyMeditationCard({
+  title,
+  description,
+}: DailyMeditationCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -20,5 +29,3 @@ export function DailyMeditationCard({ title, description }: DailyMeditationCardP
     </Card>
   );
 }
-
-
