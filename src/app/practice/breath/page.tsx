@@ -7,7 +7,7 @@ export default function BreathPage() {
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>
-            <CardTitle className="text-aurora">Breath Pacer</CardTitle>
+            <CardTitle>Дыхание</CardTitle>
           </CardHeader>
           <CardContent>
             <BreathPacer />
