@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/shared/ui/sheet";
 
 export function Header() {
@@ -14,7 +15,7 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full bg-transparent backdrop-blur-sm pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="font-semibold tracking-tight text-aurora">
-          Meditation
+          Вдох <span className="mx-2">🫧</span> выдох
         </Link>
         <nav className="hidden gap-4 sm:flex">
           <Link
@@ -57,34 +58,44 @@ export function Header() {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-3 p-4">
-                <Link
-                  href="/practice"
-                  className="text-base text-[hsl(277_36%_22%)]"
-                >
-                  Practice
-                </Link>
-                <Link
-                  href="/meditation-of-the-day"
-                  className="text-base text-[hsl(277_36%_22%)]"
-                >
-                  Today
-                </Link>
-                <Link
-                  href="/topics"
-                  className="text-base text-[hsl(277_36%_22%)]"
-                >
-                  Topics
-                </Link>
-                <Link
-                  href="/help"
-                  className="text-base text-[hsl(277_36%_22%)]"
-                >
-                  Help
-                </Link>
+                <SheetClose asChild>
+                  <Link
+                    href="/practice"
+                    className="text-base text-[hsl(277_36%_22%)]"
+                  >
+                    Practice
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/meditation-of-the-day"
+                    className="text-base text-[hsl(277_36%_22%)]"
+                  >
+                    Today
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/topics"
+                    className="text-base text-[hsl(277_36%_22%)]"
+                  >
+                    Topics
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/help"
+                    className="text-base text-[hsl(277_36%_22%)]"
+                  >
+                    Help
+                  </Link>
+                </SheetClose>
                 <div className="pt-2">
-                  <Button variant="outline" asChild className="w-full">
-                    <Link href="/signin">Sign in</Link>
-                  </Button>
+                  <SheetClose asChild>
+                    <Button variant="outline" asChild className="w-full">
+                      <Link href="/signin">Sign in</Link>
+                    </Button>
+                  </SheetClose>
                 </div>
               </div>
             </SheetContent>
