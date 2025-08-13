@@ -4,8 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/shared/ui/sonner";
 import { Header } from "@/widgets/header/ui/Header";
 import { FloatingAmbientButton } from "@/shared/ui/floating-player/FloatingAmbientButton";
-import { PageTransition } from "@/shared/ui/page-transition/PageTransition";
-import { NavigationTransitionProvider } from "@/shared/contexts/NavigationTransitionContext";
 
 const comfortaa = Comfortaa({
   subsets: ["latin", "cyrillic"],
@@ -50,13 +48,10 @@ export default function RootLayout({
       <body
         className={`${comfortaa.variable} ${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased pb-[env(safe-area-inset-bottom)]`}
       >
-        <NavigationTransitionProvider>
-          <Header />
-          <PageTransition />
-          {children}
-          <FloatingAmbientButton />
-          <Toaster richColors position="top-center" />
-        </NavigationTransitionProvider>
+        <Header />
+        {children}
+        <FloatingAmbientButton />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
