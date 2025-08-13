@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@/shared/ui/button";
 import { vibrate } from "@/shared/lib/haptics";
 import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
@@ -166,47 +165,74 @@ export function BreathPacer({
     }
   };
 
+  const phaseLabels = [
+    { phase: "inhale" as const, label: "Вдох", duration: inhaleSec },
+    { phase: "holdTop" as const, label: "Задержка", duration: holdTopSec },
+    { phase: "exhale" as const, label: "Выдох", duration: exhaleSec },
+    { phase: "holdBottom" as const, label: "Пауза", duration: holdBottomSec },
+  ];
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div
-        className="relative grid place-items-center transition-transform duration-200 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)]"
+        className="relative grid place-items-center transition-transform duration-200 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)] cursor-pointer"
         style={{ transform: `scale(${ring.scale})` }}
-        role="img"
-        aria-label={`Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}`}
+        role="button"
+        aria-label={
+          running
+            ? `Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}. Нажмите для остановки`
+            : "Нажмите чтобы начать дыхательную практику"
+        }
+        onClick={() => setRunning(!running)}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setRunning(!running);
+          }
+        }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-purple-300 to-indigo-400 shadow-lg shadow-purple-200/30" />
         <div className="absolute inset-4 rounded-full bg-gradient-to-tl from-purple-100/90 via-white/95 to-blue-50/90 shadow-inner border border-purple-200/40" />
         <div className="relative z-10 text-center">
           <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/70">
-            Фаза
+            {running ? "Фаза" : "Нажмите для начала"}
           </div>
           <div
             className="text-2xl font-semibold text-[hsl(277_36%_22%)]"
             aria-live="polite"
             aria-atomic="true"
           >
-            {getPhaseText(phase)}
+            {running ? getPhaseText(phase) : "Начать"}
           </div>
         </div>
       </div>
 
       <div className="w-full max-w-md space-y-3">
-        <div className="grid grid-cols-4 gap-2 text-xs text-[hsl(277_36%_22%)]/70">
-          <div className="text-center">Вдох: {inhaleSec}с</div>
-          <div className="text-center">Задержка: {holdTopSec}с</div>
-          <div className="text-center">Выдох: {exhaleSec}с</div>
-          <div className="text-center">Пауза: {holdBottomSec}с</div>
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          {phaseLabels.map(({ phase: phaseKey, label, duration }) => (
+            <div
+              key={phaseKey}
+              className={`text-center transition-all duration-700 ease-in-out ${
+                running && phase === phaseKey
+                  ? "text-purple-600 font-semibold"
+                  : "text-[hsl(277_36%_22%)]/70"
+              }`}
+            >
+              {label}: {duration}с
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="flex gap-3">
-        {!running ? (
-          <Button onClick={() => setRunning(true)}>Начать</Button>
-        ) : (
-          <Button variant="outline" onClick={() => setRunning(false)}>
-            Пауза
-          </Button>
-        )}
+      <div
+        className={`text-center text-sm transition-all duration-800 ease-in-out overflow-hidden ${
+          running
+            ? "opacity-100 max-h-8 text-[hsl(277_36%_22%)]/60"
+            : "opacity-0 max-h-0 text-[hsl(277_36%_22%)]/60"
+        }`}
+      >
+        Нажмите на круг для остановки
       </div>
     </div>
   );
