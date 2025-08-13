@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Raleway, Comfortaa } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/shared/ui/sonner";
 import { Header } from "@/widgets/header/ui/Header";
 import { FloatingAmbientButton } from "@/shared/ui/floating-player/FloatingAmbientButton";
 
@@ -51,7 +50,6 @@ export default function RootLayout({
         <Header />
         {children}
         <FloatingAmbientButton />
-        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
