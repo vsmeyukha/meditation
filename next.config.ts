@@ -1,13 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Configure client router cache for better prefetching
-    staleTimes: {
-      dynamic: 30, // 30 seconds for dynamic routes
-      static: 300, // 5 minutes for static routes
-    },
-  },
+  // No staleTimes needed - let pages stay cached indefinitely
 
   // Optimize caching for instant navigation
   async headers() {
