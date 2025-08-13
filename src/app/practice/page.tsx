@@ -36,7 +36,7 @@ export default function PracticePage() {
         <h1 className="mb-6 text-3xl font-semibold tracking-tight">Практика</h1>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((t) => (
-            <Link key={t.href} href={t.href} className="block">
+            <Link key={t.href} href={t.href} className="block" prefetch={true}>
               <Card variant="practice" className="h-full">
                 <CardHeader>
                   <CardTitle>{t.title}</CardTitle>

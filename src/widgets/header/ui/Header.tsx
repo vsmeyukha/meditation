@@ -12,24 +12,28 @@ export function Header() {
           <Link
             href="/practice"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
+            prefetch={true}
           >
             Практика
           </Link>
           <Link
             href="/meditation-of-the-day"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
+            prefetch={true}
           >
             Сегодня
           </Link>
           <Link
             href="/topics"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
+            prefetch={true}
           >
             Темы
           </Link>
           <Link
             href="/help"
             className="text-sm text-[hsl(277_36%_22%)]/80 hover:text-[hsl(277_36%_22%)]"
+            prefetch={true}
           >
             Помощь
           </Link>
