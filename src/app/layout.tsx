@@ -46,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={raleway.className}>
+    <html lang="ru" className={raleway.className}>
       <body
         className={`${comfortaa.variable} ${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased pb-[env(safe-area-inset-bottom)]`}
       >

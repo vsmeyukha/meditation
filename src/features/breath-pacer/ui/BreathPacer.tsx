@@ -117,6 +117,8 @@ export function BreathPacer({
       <div
         className="relative grid place-items-center transition-transform duration-200 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)]"
         style={{ transform: `scale(${ring.scale})` }}
+        role="img"
+        aria-label={`Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}`}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-purple-300 to-indigo-400 shadow-lg shadow-purple-200/30" />
         <div className="absolute inset-4 rounded-full bg-gradient-to-tl from-purple-100/90 via-white/95 to-blue-50/90 shadow-inner border border-purple-200/40" />
@@ -124,7 +126,11 @@ export function BreathPacer({
           <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/70">
             Фаза
           </div>
-          <div className="text-2xl font-semibold text-[hsl(277_36%_22%)]">
+          <div
+            className="text-2xl font-semibold text-[hsl(277_36%_22%)]"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {getPhaseText(phase)}
           </div>
         </div>

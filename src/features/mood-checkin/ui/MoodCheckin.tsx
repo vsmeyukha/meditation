@@ -106,15 +106,23 @@ export function MoodCheckin() {
   return (
     <div className="space-y-6">
       <div>
-        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">
+        <div
+          className="mb-2 text-sm text-[hsl(277_36%_22%)]/70"
+          id="mood-label"
+        >
           Настроение
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-labelledby="mood-label"
+        >
           {moods.map((m) => (
             <Button
               key={m.value}
               variant={mood === m.value ? "default" : "outline"}
               onClick={() => setMood(m.value)}
+              aria-pressed={mood === m.value}
             >
               {m.label}
             </Button>
@@ -123,13 +131,23 @@ export function MoodCheckin() {
       </div>
 
       <div>
-        <div className="mb-2 text-sm text-[hsl(277_36%_22%)]/70">Энергия</div>
-        <div className="flex flex-wrap gap-2">
+        <div
+          className="mb-2 text-sm text-[hsl(277_36%_22%)]/70"
+          id="energy-label"
+        >
+          Энергия
+        </div>
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-labelledby="energy-label"
+        >
           {energies.map((e) => (
             <Button
               key={e.value}
               variant={energy === e.value ? "default" : "outline"}
               onClick={() => setEnergy(e.value)}
+              aria-pressed={energy === e.value}
             >
               {e.label}
             </Button>

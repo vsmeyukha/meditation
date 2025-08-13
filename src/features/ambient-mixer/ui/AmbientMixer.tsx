@@ -18,6 +18,11 @@ export function AmbientMixer() {
       <div className="flex flex-col items-center gap-4">
         <button
           onClick={() => ambientStore.setEnabled(!state.enabled)}
+          aria-label={
+            state.enabled
+              ? "Приостановить воспроизведение эмбиент звуков"
+              : "Воспроизвести эмбиент звуки"
+          }
           className={`
             size-20 rounded-full grid place-items-center shadow-lg transition-all duration-300
             ${
@@ -61,6 +66,7 @@ export function AmbientMixer() {
                 value={[state[key]]}
                 onValueChange={([v]) => ambientStore.setVolume(key, v)}
                 className="purple-slider"
+                aria-label={`Громкость ${label}: ${Math.round(state[key] * 100)} процентов`}
               />
             </div>
           ))}

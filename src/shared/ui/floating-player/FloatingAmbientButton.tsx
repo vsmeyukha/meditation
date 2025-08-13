@@ -92,23 +92,8 @@ export function FloatingAmbientButton() {
   // Don't show if user explicitly closed it
   if (!visible) return null;
 
-  // Show the button if:
-  // 1. Music is currently playing, OR
-  // 2. Music was paused but has been started before (any volume > 0)
-  const hasAnyVolume = state.rain > 0 || state.stream > 0 || state.bowls > 0;
-  const shouldShow = state.enabled || hasAnyVolume;
-
-  // Temporary debugging
-  console.log("FloatingButton Debug:", {
-    pathname,
-    isClient,
-    visible,
-    isOnMixerPage,
-    enabled: state.enabled,
-    volumes: { rain: state.rain, stream: state.stream, bowls: state.bowls },
-    hasAnyVolume,
-    shouldShow,
-  });
+  // Show the button only when music is currently playing
+  const shouldShow = state.enabled;
 
   if (!shouldShow) return null;
 
