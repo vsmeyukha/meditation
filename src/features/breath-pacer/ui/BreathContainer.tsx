@@ -29,12 +29,12 @@ import {
 } from "@/shared/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-  SheetHeader,
-} from "@/shared/ui/sheet";
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,
+  DrawerHeader,
+} from "@/shared/ui/drawer";
 import { CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { Settings } from "lucide-react";
 
@@ -179,8 +179,8 @@ export function BreathContainer() {
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <CardTitle>Дыхание</CardTitle>
-          <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
-            <SheetTrigger asChild>
+          <Drawer open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+            <DrawerTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
@@ -189,16 +189,13 @@ export function BreathContainer() {
                 <Settings className="h-4 w-4" />
                 <span className="sr-only">Настройки дыхания</span>
               </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="bottom"
-              className="min-h-[95vh] bg-white rounded-t-md border-0 shadow-xl ease-out overflow-y-auto px-4"
-            >
-              <SheetHeader className="px-0">
-                <SheetTitle>Настройки дыхания</SheetTitle>
-              </SheetHeader>
+            </DrawerTrigger>
+            <DrawerContent className="min-h-[95vh]">
+              <DrawerHeader>
+                <DrawerTitle>Настройки дыхания</DrawerTitle>
+              </DrawerHeader>
 
-              <div className="flex flex-col gap-6 py-6">
+              <div className="flex flex-col gap-6 px-4 pb-6">
                 {/* Mode Selection */}
                 <div className="space-y-3">
                   <h3 className="text-lg font-medium">Режим дыхания</h3>
@@ -346,8 +343,8 @@ export function BreathContainer() {
                   </div>
                 )}
               </div>
-            </SheetContent>
-          </Sheet>
+            </DrawerContent>
+          </Drawer>
         </div>
       </CardHeader>
 
