@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BreathPacer } from "./BreathPacer";
 import { TapCalibrator } from "./TapCalibrator";
@@ -57,43 +57,15 @@ export function BreathContainer() {
   const [isHydrated, setIsHydrated] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  // Handle swipe gestures for bottom drawer handle
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    const startY = touch.clientY;
-
-    const handleTouchMove = (moveEvent: TouchEvent) => {
-      const moveTouch = moveEvent.touches[0];
-      const deltaY = startY - moveTouch.clientY;
-
-      // If swiped up more than 50px, open drawer
-      if (deltaY > 50) {
-        setIsSettingsOpen(true);
-        cleanup();
-      }
-    };
-
-    const handleTouchEnd = () => {
-      cleanup();
-    };
-
-    const cleanup = () => {
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
-    };
-
-    document.addEventListener("touchmove", handleTouchMove, { passive: true });
-    document.addEventListener("touchend", handleTouchEnd);
-  };
+  const touchStartYRef = useRef<number | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const openedOnSwipeRef = useRef(false);
 
   // Load settings and presets after hydration
   useEffect(() => {
     setSettings(getBreathSettings());
     setPresets(getBreathPresets());
     setIsHydrated(true);
-    setMounted(true);
   }, []);
 
   // Get current durations based on mode and selected preset
@@ -214,7 +186,12 @@ export function BreathContainer() {
       >
         <div className="flex flex-row items-center justify-between">
           <CardTitle>Дыхание</CardTitle>
-          <Drawer open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+          <Drawer
+            open={isSettingsOpen}
+            onOpenChange={setIsSettingsOpen}
+            dismissible={true}
+            shouldScaleBackground={false}
+          >
             <DrawerTrigger asChild>
               <Button
                 variant="ghost"
@@ -225,6 +202,60 @@ export function BreathContainer() {
                 <span className="sr-only">Настройки дыхания</span>
               </Button>
             </DrawerTrigger>
+
+            {/* Bottom swipe trigger rendered via portal to escape card's containing block */}
+            {isHydrated &&
+              createPortal(
+                <DrawerTrigger asChild>
+                  <div
+                    className={`fixed bottom-0 left-0 right-0 h-20 transition-opacity duration-[2000ms] ease-in-out ${
+                      isRunning
+                        ? "opacity-0 pointer-events-none"
+                        : "opacity-100"
+                    }`}
+                    style={{ zIndex: 9999 }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Провести вверх для настроек"
+                    onTouchStart={(e) => {
+                      const t = e.touches[0];
+                      touchStartYRef.current = t.clientY;
+                      touchStartXRef.current = t.clientX;
+                      openedOnSwipeRef.current = false;
+                    }}
+                    onTouchMove={(e) => {
+                      if (touchStartYRef.current == null) return;
+                      const t = e.touches[0];
+                      const dy = touchStartYRef.current - t.clientY;
+                      const dx = Math.abs(
+                        (touchStartXRef.current ?? t.clientX) - t.clientX,
+                      );
+                      if (!openedOnSwipeRef.current && dy > 40 && dx < 30) {
+                        setIsSettingsOpen(true);
+                        openedOnSwipeRef.current = true;
+                        if (e.cancelable) e.preventDefault();
+                      }
+                    }}
+                    onTouchEnd={() => {
+                      touchStartYRef.current = null;
+                      touchStartXRef.current = null;
+                      openedOnSwipeRef.current = false;
+                    }}
+                  >
+                    {/* Visual handle indicator */}
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                      <div className="flex flex-col items-center">
+                        <div className="w-12 h-1 bg-gray-300/60 rounded-full mb-2" />
+                        <div className="flex items-center justify-center w-16 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-sm">
+                          <div className="w-6 h-0.5 bg-gray-400/70 rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </DrawerTrigger>,
+                document.body,
+              )}
+
             <DrawerContent className="min-h-[95vh]">
               <DrawerHeader>
                 <DrawerTitle>Настройки дыхания</DrawerTitle>
@@ -421,34 +452,6 @@ export function BreathContainer() {
           </div>
         </div>
       </CardContent>
-
-      {/* Bottom Swipe Handle - Portaled to body to escape positioning context */}
-      {mounted &&
-        createPortal(
-          <div
-            className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 z-40 transition-opacity duration-[2000ms] ease-in-out ${
-              isRunning ? "opacity-0 pointer-events-none" : "opacity-100"
-            }`}
-            onTouchStart={handleTouchStart}
-            role="button"
-            tabIndex={0}
-            aria-label="Провести вверх для настроек"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setIsSettingsOpen(true);
-              }
-            }}
-          >
-            <div className="flex flex-col items-center pb-4 pt-2 px-8">
-              {/* Handle area */}
-              <div className="flex items-center justify-center w-16 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-sm">
-                <div className="w-6 h-0.5 bg-gray-400/70 rounded-full" />
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
     </>
   );
 }
