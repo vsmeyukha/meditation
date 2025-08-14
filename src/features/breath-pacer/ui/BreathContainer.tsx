@@ -28,6 +28,15 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetHeader,
+} from "@/shared/ui/sheet";
+import { CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
+import { Settings } from "lucide-react";
 
 const defaultDurations = {
   inhaleSec: 4,
@@ -45,6 +54,7 @@ export function BreathContainer() {
   const [showCalibrator, setShowCalibrator] = useState(false);
   const [customName, setCustomName] = useState("");
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Load settings and presets after hydration
   useEffect(() => {
@@ -164,129 +174,168 @@ export function BreathContainer() {
   const hasPresets = presets.length > 0;
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <BreathPacer {...currentDurations} />
-
-      {/* Mode Selection */}
-      <Tabs
-        value={settings.currentMode}
-        onValueChange={(value) =>
-          handleModeChange(value as "default" | "custom")
-        }
-        className="w-full max-w-md"
-      >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="default">Стандарт</TabsTrigger>
-          <TabsTrigger value="custom">Свой ритм</TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      {/* Custom Mode Controls */}
-      {settings.currentMode === "custom" && (
-        <div className="flex flex-col items-center gap-4 w-full max-w-md">
-          {/* Existing Presets Selection */}
-          {hasPresets && (
-            <div className="flex items-center gap-3 w-full">
-              <Select
-                value={settings.selectedPresetId}
-                onValueChange={handlePresetChange}
+    <>
+      {/* Header with Title and Settings */}
+      <CardHeader>
+        <div className="flex flex-row items-center justify-between">
+          <CardTitle>Дыхание</CardTitle>
+          <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
               >
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Выберите паттерн" />
-                </SelectTrigger>
-                <SelectContent>
-                  {presets.map((preset) => (
-                    <SelectItem key={preset.id} value={preset.id}>
-                      <div className="flex items-center justify-between w-full">
-                        <span>{preset.name}</span>
-                        <span className="text-xs text-muted-foreground ml-2">
-                          {preset.inhaleSec}/{preset.holdTopSec}/
-                          {preset.exhaleSec}/{preset.holdBottomSec}
-                        </span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <Settings className="h-4 w-4" />
+                <span className="sr-only">Настройки дыхания</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="bottom"
+              className="min-h-[95vh] bg-white rounded-t-md border-0 shadow-xl ease-out overflow-y-auto"
+            >
+              <SheetHeader>
+                <SheetTitle>Настройки дыхания</SheetTitle>
+              </SheetHeader>
+              <div className="flex flex-col gap-4 py-4">
+                <p className="text-muted-foreground">
+                  Здесь будут настройки для персонализации дыхательной практики
+                </p>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </CardHeader>
 
-              {selectedPreset && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDeletePreset(selectedPreset.id)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                >
-                  ✕
-                </Button>
+      {/* Content */}
+      <CardContent>
+        <div className="flex flex-col items-center gap-6">
+          <BreathPacer {...currentDurations} />
+
+          {/* Mode Selection */}
+          <Tabs
+            value={settings.currentMode}
+            onValueChange={(value) =>
+              handleModeChange(value as "default" | "custom")
+            }
+            className="w-full max-w-md"
+          >
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="default">Стандарт</TabsTrigger>
+              <TabsTrigger value="custom">Свой ритм</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Custom Mode Controls */}
+          {settings.currentMode === "custom" && (
+            <div className="flex flex-col items-center gap-4 w-full max-w-md">
+              {/* Existing Presets Selection */}
+              {hasPresets && (
+                <div className="flex items-center gap-3 w-full">
+                  <Select
+                    value={settings.selectedPresetId}
+                    onValueChange={handlePresetChange}
+                  >
+                    <SelectTrigger className="flex-1">
+                      <SelectValue placeholder="Выберите паттерн" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {presets.map((preset) => (
+                        <SelectItem key={preset.id} value={preset.id}>
+                          <div className="flex items-center justify-between w-full">
+                            <span>{preset.name}</span>
+                            <span className="text-xs text-muted-foreground ml-2">
+                              {preset.inhaleSec}/{preset.holdTopSec}/
+                              {preset.exhaleSec}/{preset.holdBottomSec}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {selectedPreset && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeletePreset(selectedPreset.id)}
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    >
+                      ✕
+                    </Button>
+                  )}
+                </div>
               )}
+
+              {/* Calibration Controls */}
+              <div className="flex flex-col items-center gap-3 w-full">
+                <div className="flex items-center gap-3 w-full">
+                  <input
+                    type="text"
+                    placeholder="Название паттерна (опционально)"
+                    value={customName}
+                    onChange={(e) => setCustomName(e.target.value)}
+                    className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm bg-white/60 backdrop-blur-sm"
+                  />
+
+                  <Button
+                    onClick={() => setShowCalibrator(true)}
+                    className="rounded-full bg-indigo-500 hover:bg-indigo-600 text-white"
+                    size="sm"
+                  >
+                    Калибровать
+                  </Button>
+                </div>
+
+                {/* Profile Selection */}
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-muted-foreground">Профиль:</span>
+                  <Select
+                    value={settings.selectedProfile}
+                    onValueChange={handleProfileChange}
+                  >
+                    <SelectTrigger className="w-40">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="default">Default 4:4:6:2</SelectItem>
+                      <SelectItem value="box">Box 1:1:1:1</SelectItem>
+                      <SelectItem value="coherent">Coherent 1:0:1:0</SelectItem>
+                      <SelectItem value="relax">Relax 2:0.5:3:0.5</SelectItem>
+                      <SelectItem value="478">4-7-8</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Calibration Controls */}
-          <div className="flex flex-col items-center gap-3 w-full">
-            <div className="flex items-center gap-3 w-full">
-              <input
-                type="text"
-                placeholder="Название паттерна (опционально)"
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm bg-white/60 backdrop-blur-sm"
-              />
-
-              <Button
-                onClick={() => setShowCalibrator(true)}
-                className="rounded-full bg-indigo-500 hover:bg-indigo-600 text-white"
-                size="sm"
-              >
-                Калибровать
-              </Button>
-            </div>
-
-            {/* Profile Selection */}
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground">Профиль:</span>
-              <Select
-                value={settings.selectedProfile}
-                onValueChange={handleProfileChange}
-              >
-                <SelectTrigger className="w-40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="default">Default 4:4:6:2</SelectItem>
-                  <SelectItem value="box">Box 1:1:1:1</SelectItem>
-                  <SelectItem value="coherent">Coherent 1:0:1:0</SelectItem>
-                  <SelectItem value="relax">Relax 2:0.5:3:0.5</SelectItem>
-                  <SelectItem value="478">4-7-8</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Show current pattern info */}
+          <div className="text-xs text-center text-muted-foreground max-w-md">
+            {settings.currentMode === "default" ? (
+              <p>
+                Стандартный паттерн: Вдох 4с → Пауза 4с → Выдох 6с → Пауза 2с
+              </p>
+            ) : selectedPreset ? (
+              <p>
+                {selectedPreset.name}: Вдох {selectedPreset.inhaleSec}с → Пауза{" "}
+                {selectedPreset.holdTopSec}с → Выдох {selectedPreset.exhaleSec}с
+                → Пауза {selectedPreset.holdBottomSec}с
+              </p>
+            ) : (
+              <p>Создайте свой первый паттерн с помощью калибровки</p>
+            )}
           </div>
+
+          {/* Tap Calibrator Modal */}
+          {showCalibrator && (
+            <TapCalibrator
+              onClose={() => setShowCalibrator(false)}
+              onCalibrated={handleCalibrated}
+            />
+          )}
         </div>
-      )}
-
-      {/* Show current pattern info */}
-      <div className="text-xs text-center text-muted-foreground max-w-md">
-        {settings.currentMode === "default" ? (
-          <p>Стандартный паттерн: Вдох 4с → Пауза 4с → Выдох 6с → Пауза 2с</p>
-        ) : selectedPreset ? (
-          <p>
-            {selectedPreset.name}: Вдох {selectedPreset.inhaleSec}с → Пауза{" "}
-            {selectedPreset.holdTopSec}с → Выдох {selectedPreset.exhaleSec}с →
-            Пауза {selectedPreset.holdBottomSec}с
-          </p>
-        ) : (
-          <p>Создайте свой первый паттерн с помощью калибровки</p>
-        )}
-      </div>
-
-      {/* Tap Calibrator Modal */}
-      {showCalibrator && (
-        <TapCalibrator
-          onClose={() => setShowCalibrator(false)}
-          onCalibrated={handleCalibrated}
-        />
-      )}
-    </div>
+      </CardContent>
+    </>
   );
 }
