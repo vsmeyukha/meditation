@@ -77,7 +77,7 @@ export default async function TopicPage(props: { params: Params }) {
   if (!topic) return notFound();
 
   return (
-    <main className="min-h-svh">
+    <main className="min-h-[calc(100svh-3.5rem)]">
       <section className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Card>
           <CardHeader>

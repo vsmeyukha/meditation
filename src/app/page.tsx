@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="h-svh">
+    <main className="h-[calc(100svh-3.5rem)]">
       <section className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-6 text-center">
         {/* Static shell - renders instantly with PPR */}
         <Button
