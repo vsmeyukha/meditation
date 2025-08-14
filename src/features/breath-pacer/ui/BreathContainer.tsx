@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 import { BreathPacer } from "./BreathPacer";
 import { TapCalibrator } from "./TapCalibrator";
 import {
@@ -60,12 +61,52 @@ export function BreathContainer() {
   const touchStartYRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const openedOnSwipeRef = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   // Load settings and presets after hydration
   useEffect(() => {
     setSettings(getBreathSettings());
     setPresets(getBreathPresets());
     setIsHydrated(true);
+
+    // Show instructions toast below the card
+    setTimeout(() => {
+      if (cardRef.current) {
+        const cardRect = cardRef.current.getBoundingClientRect();
+        const toastTop = cardRect.bottom + 40;
+
+        toast(
+          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
+          {
+            duration: 5000,
+            position: "top-center",
+            classNames: {
+              toast: "toast-card-style",
+            },
+            style: {
+              position: "fixed",
+              top: `${toastTop}px`,
+              left: `${cardRect.left}px`,
+              width: `${cardRect.width}px`,
+              transform: "none",
+              zIndex: 50,
+            },
+          },
+        );
+      } else {
+        // Fallback to normal positioning
+        toast(
+          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
+          {
+            duration: 5000,
+            position: "top-center",
+            classNames: {
+              toast: "toast-card-style",
+            },
+          },
+        );
+      }
+    }, 1500); // Small delay to ensure card is rendered
   }, []);
 
   // Get current durations based on mode and selected preset
@@ -179,7 +220,7 @@ export function BreathContainer() {
   const hasPresets = presets.length > 0;
 
   return (
-    <>
+    <div ref={cardRef}>
       {/* Header with Title and Settings */}
       <CardHeader
         className={`transition-opacity duration-[2000ms] ease-in-out ${isRunning ? "opacity-0 pointer-events-none" : "opacity-100"}`}
@@ -423,6 +464,11 @@ export function BreathContainer() {
               setIsRunning(running);
               if (running) setIsSettingsOpen(false);
             }}
+            onDoubleClick={() => {
+              if (!isRunning) {
+                setShowCalibrator(true);
+              }
+            }}
           />
 
           <div
@@ -452,6 +498,6 @@ export function BreathContainer() {
           </div>
         </div>
       </CardContent>
-    </>
+    </div>
   );
 }

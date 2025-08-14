@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Raleway, Comfortaa } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/widgets/header/ui/Header";
 import { FloatingAmbientButton } from "@/shared/ui/floating-player/FloatingAmbientButton";
+import { Toaster } from "@/shared/ui/sonner";
 
 const comfortaa = Comfortaa({
   subsets: ["latin", "cyrillic"],
@@ -50,6 +51,7 @@ export default function RootLayout({
         <Header />
         {children}
         <FloatingAmbientButton />
+        <Toaster />
       </body>
     </html>
   );

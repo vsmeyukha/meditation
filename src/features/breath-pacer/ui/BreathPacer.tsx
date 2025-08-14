@@ -12,6 +12,7 @@ interface BreathPacerProps {
   exhaleSec?: number;
   holdBottomSec?: number;
   onRunningChange?: (running: boolean) => void;
+  onDoubleClick?: () => void;
 }
 
 export function BreathPacer({
@@ -20,6 +21,7 @@ export function BreathPacer({
   exhaleSec = 6,
   holdBottomSec = 2,
   onRunningChange,
+  onDoubleClick,
 }: BreathPacerProps) {
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
@@ -30,6 +32,8 @@ export function BreathPacer({
   const requestRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
   const soundEngineRef = useRef<SoundEngine | null>(null);
+  const lastClickTimeRef = useRef<number>(0);
+  const clickCountRef = useRef<number>(0);
   const phaseTimes = useMemo(
     () => ({
       inhale: inhaleSec * 1000,
@@ -190,7 +194,26 @@ export function BreathPacer({
             ? `Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}. Нажмите для остановки`
             : "Нажмите чтобы начать дыхательную практику"
         }
-        onClick={() => setRunning((prev) => !prev)}
+        onClick={() => {
+          const now = Date.now();
+          const timeDiff = now - lastClickTimeRef.current;
+
+          if (timeDiff < 300) {
+            // Double tap detected (within 300ms)
+            clickCountRef.current = 0;
+            onDoubleClick?.();
+          } else {
+            clickCountRef.current = 1;
+            setTimeout(() => {
+              if (clickCountRef.current === 1) {
+                // Single tap action
+                setRunning((prev) => !prev);
+              }
+            }, 300);
+          }
+
+          lastClickTimeRef.current = now;
+        }}
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
