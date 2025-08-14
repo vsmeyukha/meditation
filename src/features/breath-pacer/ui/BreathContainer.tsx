@@ -55,6 +55,7 @@ export function BreathContainer() {
   const [customName, setCustomName] = useState("");
   const [isHydrated, setIsHydrated] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
 
   // Load settings and presets after hydration
   useEffect(() => {
@@ -176,7 +177,9 @@ export function BreathContainer() {
   return (
     <>
       {/* Header with Title and Settings */}
-      <CardHeader>
+      <CardHeader
+        className={`transition-opacity duration-[2000ms] ease-in-out ${isRunning ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+      >
         <div className="flex flex-row items-center justify-between">
           <CardTitle>Дыхание</CardTitle>
           <Drawer open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
@@ -351,26 +354,39 @@ export function BreathContainer() {
       {/* Content */}
       <CardContent>
         <div className="flex flex-col items-center gap-6">
-          <BreathPacer {...currentDurations} />
+          <BreathPacer
+            {...currentDurations}
+            onRunningChange={(running) => {
+              setIsRunning(running);
+              if (running) setIsSettingsOpen(false);
+            }}
+          />
 
-          {/* Current pattern info - minimal display */}
-          <div className="text-sm text-center text-muted-foreground">
-            {settings.currentMode === "default" ? (
-              <p>Стандартный паттерн дыхания</p>
-            ) : selectedPreset ? (
-              <p>{selectedPreset.name}</p>
-            ) : (
-              <p>Настройте свой ритм в настройках</p>
+          <div
+            className={`w-full transition-opacity duration-[2000ms] ease-in-out ${
+              isRunning ? "opacity-0 pointer-events-none" : "opacity-100"
+            }`}
+            aria-hidden={isRunning}
+          >
+            {/* Current pattern info - minimal display */}
+            <div className="text-sm text-center text-muted-foreground">
+              {settings.currentMode === "default" ? (
+                <p>Стандартный паттерн дыхания</p>
+              ) : selectedPreset ? (
+                <p>{selectedPreset.name}</p>
+              ) : (
+                <p>Настройте свой ритм в настройках</p>
+              )}
+            </div>
+
+            {/* Tap Calibrator Modal */}
+            {showCalibrator && (
+              <TapCalibrator
+                onClose={() => setShowCalibrator(false)}
+                onCalibrated={handleCalibrated}
+              />
             )}
           </div>
-
-          {/* Tap Calibrator Modal */}
-          {showCalibrator && (
-            <TapCalibrator
-              onClose={() => setShowCalibrator(false)}
-              onCalibrated={handleCalibrated}
-            />
-          )}
         </div>
       </CardContent>
     </>

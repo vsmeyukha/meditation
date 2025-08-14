@@ -11,6 +11,7 @@ interface BreathPacerProps {
   holdTopSec?: number;
   exhaleSec?: number;
   holdBottomSec?: number;
+  onRunningChange?: (running: boolean) => void;
 }
 
 export function BreathPacer({
@@ -18,6 +19,7 @@ export function BreathPacer({
   holdTopSec = 4,
   exhaleSec = 6,
   holdBottomSec = 2,
+  onRunningChange,
 }: BreathPacerProps) {
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
@@ -37,6 +39,11 @@ export function BreathPacer({
     }),
     [inhaleSec, holdTopSec, exhaleSec, holdBottomSec],
   );
+
+  // Notify parent after commit to avoid setState during render in parent
+  useEffect(() => {
+    if (onRunningChange) onRunningChange(running);
+  }, [running, onRunningChange]);
 
   useEffect(() => {
     setCycleMs(
@@ -183,12 +190,12 @@ export function BreathPacer({
             ? `Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}. Нажмите для остановки`
             : "Нажмите чтобы начать дыхательную практику"
         }
-        onClick={() => setRunning(!running)}
+        onClick={() => setRunning((prev) => !prev)}
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            setRunning(!running);
+            setRunning((prev) => !prev);
           }
         }}
       >
@@ -208,7 +215,11 @@ export function BreathPacer({
         </div>
       </div>
 
-      <div className="w-full max-w-md space-y-3">
+      <div
+        className={`w-full max-w-md space-y-3 transition-all duration-[2000ms] ease-in-out ${
+          running ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
         <div className="grid grid-cols-4 gap-2 text-xs">
           {phaseLabels.map(({ phase: phaseKey, label, duration }) => (
             <div
@@ -226,13 +237,11 @@ export function BreathPacer({
       </div>
 
       <div
-        className={`text-center text-sm transition-all duration-800 ease-in-out overflow-hidden ${
-          running
-            ? "opacity-100 max-h-8 text-[hsl(277_36%_22%)]/60"
-            : "opacity-0 max-h-0 text-[hsl(277_36%_22%)]/60"
-        }`}
+        className={`text-center text-sm transition-all duration-[2000ms] ease-in-out ${
+          running ? "opacity-0 pointer-events-none" : "opacity-100"
+        } text-[hsl(277_36%_22%)]/60`}
       >
-        Нажмите на круг для остановки
+        Нажмите на круг чтобы начать
       </div>
     </div>
   );
