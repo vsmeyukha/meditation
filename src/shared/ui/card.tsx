@@ -10,7 +10,7 @@ const cardVariants = cva(
       variant: {
         default: "bg-card text-card-foreground border",
         practice:
-          "bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-[length:200%_200%] animate-gradient-x shadow-lg shadow-white/20 backdrop-blur-sm transition-all duration-300 hover:from-purple-300 hover:to-blue-300 hover:shadow-white/40 border-0",
+          "shadow-lg shadow-white/20 backdrop-blur-sm transition-all duration-300 hover:shadow-white/40 border-0",
         content:
           "bg-gradient-to-br from-white/70 via-purple-50/80 to-blue-50/70 backdrop-blur-sm border border-purple-200/30 shadow-lg shadow-purple-100/20",
       },

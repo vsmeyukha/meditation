@@ -19,7 +19,7 @@
   --font-mono: var(--font-geist-mono);
   /* Custom animation tokens */
   --animate-gradient-x: gradientX 5s ease infinite;
-  --animate-gradient-x-slow: gradientXSlow 8s ease infinite;
+  --animate-gradient-x-slow: gradientXSlow 40s ease-in-out infinite;
 }
 
 body {
