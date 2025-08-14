@@ -11,7 +11,7 @@ export interface BreathPreset {
 export interface BreathSettings {
   currentMode: "default" | "custom";
   selectedPresetId?: string;
-  selectedProfile: "keep" | "box" | "coherent" | "relax" | "478";
+  selectedProfile: "default" | "box" | "coherent" | "relax" | "478";
 }
 
 const STORAGE_KEYS = {
@@ -21,7 +21,7 @@ const STORAGE_KEYS = {
 
 const DEFAULT_SETTINGS: BreathSettings = {
   currentMode: "default",
-  selectedProfile: "keep",
+  selectedProfile: "default",
 };
 
 export function saveBreathPreset(

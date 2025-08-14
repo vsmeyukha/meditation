@@ -5,7 +5,7 @@ export type Ratios = {
   holdBottom: number;
 };
 
-export type Profile = "keep" | "box" | "coherent" | "relax" | "478";
+export type Profile = "default" | "box" | "coherent" | "relax" | "478";
 
 export const normalize = (r: Ratios): Ratios => {
   const s = r.inhale + r.holdTop + r.exhale + r.holdBottom || 1;
@@ -17,8 +17,10 @@ export const normalize = (r: Ratios): Ratios => {
   };
 };
 
-export function ratiosForProfile(profile: Profile, current: Ratios): Ratios {
+export function ratiosForProfile(profile: Profile): Ratios {
   switch (profile) {
+    case "default":
+      return normalize({ inhale: 4, holdTop: 4, exhale: 6, holdBottom: 2 });
     case "box":
       return normalize({ inhale: 1, holdTop: 1, exhale: 1, holdBottom: 1 });
     case "coherent":
@@ -27,9 +29,8 @@ export function ratiosForProfile(profile: Profile, current: Ratios): Ratios {
       return normalize({ inhale: 2, holdTop: 0.5, exhale: 3, holdBottom: 0.5 });
     case "478":
       return normalize({ inhale: 4, holdTop: 7, exhale: 8, holdBottom: 0 });
-    case "keep":
     default:
-      return normalize(current);
+      return normalize({ inhale: 4, holdTop: 4, exhale: 6, holdBottom: 2 });
   }
 }
 

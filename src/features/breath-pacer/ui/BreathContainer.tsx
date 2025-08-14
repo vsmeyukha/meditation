@@ -5,7 +5,6 @@ import { TapCalibrator } from "./TapCalibrator";
 import {
   ratiosForProfile,
   durationsFromCycle,
-  currentRatiosFromDurations,
   type Profile,
 } from "../lib/ratios";
 import {
@@ -38,7 +37,7 @@ const defaultDurations = {
 export function BreathContainer() {
   const [settings, setSettings] = useState<BreathSettings>(() => ({
     currentMode: "default",
-    selectedProfile: "keep",
+    selectedProfile: "default",
   }));
   const [presets, setPresets] = useState<BreathPreset[]>([]);
   const [showCalibrator, setShowCalibrator] = useState(false);
@@ -68,11 +67,6 @@ export function BreathContainer() {
     return defaultDurations;
   }, [settings.currentMode, settings.selectedPresetId]);
 
-  // Get current ratios for profile calculations
-  const currentRatios = useMemo(() => {
-    return currentRatiosFromDurations(currentDurations);
-  }, [currentDurations]);
-
   // Update settings and persist
   const updateSettings = (updates: Partial<typeof settings>) => {
     const newSettings = { ...settings, ...updates };
@@ -84,7 +78,7 @@ export function BreathContainer() {
 
   // Handle calibration completion
   const handleCalibrated = (cycleSec: number) => {
-    const ratios = ratiosForProfile(settings.selectedProfile, currentRatios);
+    const ratios = ratiosForProfile(settings.selectedProfile);
     const durations = durationsFromCycle(cycleSec, ratios);
 
     const presetName =
@@ -227,7 +221,7 @@ export function BreathContainer() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="keep">Keep</SelectItem>
+                  <SelectItem value="default">Default 4:4:6:2</SelectItem>
                   <SelectItem value="box">Box 1:1:1:1</SelectItem>
                   <SelectItem value="coherent">Coherent 1:0:1:0</SelectItem>
                   <SelectItem value="relax">Relax 2:0.5:3:0.5</SelectItem>
