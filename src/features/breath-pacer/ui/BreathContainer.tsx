@@ -16,6 +16,7 @@ import {
   getPresetById,
   deleteBreathPreset,
   type BreathPreset,
+  type BreathSettings,
 } from "../lib/breath-storage";
 import { Button } from "@/shared/ui/button";
 import {
@@ -35,14 +36,20 @@ const defaultDurations = {
 };
 
 export function BreathContainer() {
-  const [settings, setSettings] = useState(() => getBreathSettings());
+  const [settings, setSettings] = useState<BreathSettings>(() => ({
+    currentMode: "default",
+    selectedProfile: "keep",
+  }));
   const [presets, setPresets] = useState<BreathPreset[]>([]);
   const [showCalibrator, setShowCalibrator] = useState(false);
   const [customName, setCustomName] = useState("");
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Load presets on mount
+  // Load settings and presets after hydration
   useEffect(() => {
+    setSettings(getBreathSettings());
     setPresets(getBreathPresets());
+    setIsHydrated(true);
   }, []);
 
   // Get current durations based on mode and selected preset
@@ -70,7 +77,9 @@ export function BreathContainer() {
   const updateSettings = (updates: Partial<typeof settings>) => {
     const newSettings = { ...settings, ...updates };
     setSettings(newSettings);
-    saveBreathSettings(newSettings);
+    if (isHydrated) {
+      saveBreathSettings(newSettings);
+    }
   };
 
   // Handle calibration completion
