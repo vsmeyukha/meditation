@@ -62,7 +62,7 @@ export function BreathPacer({
       try {
         const engine = new SoundEngine();
         await engine.init();
-        await engine.loadAndLoop("/breathe/ocean-waves-112906.mp3");
+        await engine.loadAndLoop("/breathe/waves.WAV");
         engine.start(1.5);
         engine.scheduleBreathCycle({
           inhale: inhaleSec,
@@ -155,7 +155,7 @@ export function BreathPacer({
       case "inhale":
         return "Вдох";
       case "holdTop":
-        return "Задержка";
+        return "Держим";
       case "exhale":
         return "Выдох";
       case "holdBottom":
@@ -167,7 +167,7 @@ export function BreathPacer({
 
   const phaseLabels = [
     { phase: "inhale" as const, label: "Вдох", duration: inhaleSec },
-    { phase: "holdTop" as const, label: "Задержка", duration: holdTopSec },
+    { phase: "holdTop" as const, label: "Держим", duration: holdTopSec },
     { phase: "exhale" as const, label: "Выдох", duration: exhaleSec },
     { phase: "holdBottom" as const, label: "Пауза", duration: holdBottomSec },
   ];
@@ -215,7 +215,7 @@ export function BreathPacer({
               key={phaseKey}
               className={`text-center transition-all duration-700 ease-in-out ${
                 running && phase === phaseKey
-                  ? "text-purple-600 font-semibold"
+                  ? "text-purple-600"
                   : "text-[hsl(277_36%_22%)]/70"
               }`}
             >

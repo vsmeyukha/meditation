@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { BreathPacer } from "@/features/breath-pacer/ui/BreathPacer";
+import { BreathContainer } from "@/features/breath-pacer/ui/BreathContainer";
 
 export default function BreathPage() {
   return (
@@ -10,7 +10,7 @@ export default function BreathPage() {
             <CardTitle>Дыхание</CardTitle>
           </CardHeader>
           <CardContent>
-            <BreathPacer />
+            <BreathContainer />
           </CardContent>
         </Card>
       </section>
