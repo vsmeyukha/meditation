@@ -45,6 +45,16 @@ export function durationsFromCycle(totalSec: number, ratios: Ratios) {
   };
 }
 
+export function durationsFromCycleExact(totalSec: number, ratios: Ratios) {
+  const round = (x: number) => Math.round(x * 10) / 10;
+  return {
+    inhaleSec: round(totalSec * ratios.inhale),
+    holdTopSec: round(totalSec * ratios.holdTop),
+    exhaleSec: round(totalSec * ratios.exhale),
+    holdBottomSec: round(totalSec * ratios.holdBottom),
+  };
+}
+
 export function currentRatiosFromDurations(durations: {
   inhaleSec: number;
   holdTopSec: number;

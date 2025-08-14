@@ -40,6 +40,28 @@ export function saveBreathPreset(
   return newPreset;
 }
 
+export function updateBreathPreset(
+  id: string,
+  updates: Partial<Omit<BreathPreset, "id" | "createdAt">>,
+): BreathPreset | null {
+  const presets = getBreathPresets();
+  const presetIndex = presets.findIndex((preset) => preset.id === id);
+
+  if (presetIndex === -1) return null;
+
+  const updatedPreset = {
+    ...presets[presetIndex],
+    ...updates,
+  };
+
+  const updatedPresets = [...presets];
+  updatedPresets[presetIndex] = updatedPreset;
+
+  localStorage.setItem(STORAGE_KEYS.PRESETS, JSON.stringify(updatedPresets));
+
+  return updatedPreset;
+}
+
 export function getBreathPresets(): BreathPreset[] {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.PRESETS);

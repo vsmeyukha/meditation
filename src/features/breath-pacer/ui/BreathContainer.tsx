@@ -5,6 +5,7 @@ import { TapCalibrator } from "./TapCalibrator";
 import {
   ratiosForProfile,
   durationsFromCycle,
+  durationsFromCycleExact,
   type Profile,
 } from "../lib/ratios";
 import {
@@ -14,6 +15,7 @@ import {
   saveBreathSettings,
   getPresetById,
   deleteBreathPreset,
+  updateBreathPreset,
   type BreathPreset,
   type BreathSettings,
 } from "../lib/breath-storage";
@@ -124,6 +126,38 @@ export function BreathContainer() {
     setPresets(getBreathPresets());
   };
 
+  // Handle profile change with automatic preset update
+  const handleProfileChange = (newProfile: Profile) => {
+    updateSettings({ selectedProfile: newProfile });
+
+    // If we're in custom mode with a selected preset, update it with new ratios
+    if (
+      settings.currentMode === "custom" &&
+      settings.selectedPresetId &&
+      isHydrated
+    ) {
+      const currentPreset = getPresetById(settings.selectedPresetId);
+      if (currentPreset) {
+        // Calculate current total cycle time
+        const totalTime =
+          currentPreset.inhaleSec +
+          currentPreset.holdTopSec +
+          currentPreset.exhaleSec +
+          currentPreset.holdBottomSec;
+
+        // Apply new profile ratios to the same total time
+        const newRatios = ratiosForProfile(newProfile);
+        const newDurations = durationsFromCycleExact(totalTime, newRatios);
+
+        // Update the preset with new durations
+        updateBreathPreset(settings.selectedPresetId, newDurations);
+
+        // Refresh presets list to reflect changes
+        setPresets(getBreathPresets());
+      }
+    }
+  };
+
   const selectedPreset = settings.selectedPresetId
     ? getPresetById(settings.selectedPresetId)
     : null;
@@ -213,9 +247,7 @@ export function BreathContainer() {
               <span className="text-muted-foreground">Профиль:</span>
               <Select
                 value={settings.selectedProfile}
-                onValueChange={(value: Profile) =>
-                  updateSettings({ selectedProfile: value })
-                }
+                onValueChange={handleProfileChange}
               >
                 <SelectTrigger className="w-40">
                   <SelectValue />
