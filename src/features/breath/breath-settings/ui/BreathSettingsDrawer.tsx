@@ -151,7 +151,7 @@ export function BreathSettingsDrawer({
           document.body,
         )}
 
-      <DrawerContent className="pb-6 bg-[#251b47] border-none">
+      <DrawerContent className="pb-6 bg-[#251b47] border-none outline-none focus:outline-none focus-visible:outline-none">
         <DrawerTitle className="sr-only">Настройки дыхания</DrawerTitle>
         <DrawerDescription className="sr-only">
           Выберите режим дыхательного упражнения
