@@ -2,39 +2,15 @@
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/shared/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-  DrawerTitle,
-  DrawerHeader,
-} from "@/shared/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/shared/ui/drawer";
 import { Settings } from "lucide-react";
-import { type Profile } from "@/features/breath/breath-exercise/lib/ratios";
-import { type BreathPreset, type BreathSettings } from "../lib/breath-storage";
+import { BreathingModeCard } from "./breathingModeCard";
 
 interface BreathSettingsDrawerProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   isRunning: boolean;
   isHydrated: boolean;
-  settings: BreathSettings;
-  presets: BreathPreset[];
-  customName: string;
-  onCustomNameChange: (name: string) => void;
-  onModeChange: (mode: "default" | "custom") => void;
-  onPresetChange: (presetId: string) => void;
-  onDeletePreset: (presetId: string) => void;
-  onProfileChange: (profile: Profile) => void;
-  onShowCalibrator: () => void;
 }
 
 export function BreathSettingsDrawer({
@@ -42,24 +18,19 @@ export function BreathSettingsDrawer({
   onOpenChange,
   isRunning,
   isHydrated,
-  settings,
-  presets,
-  customName,
-  onCustomNameChange,
-  onModeChange,
-  onPresetChange,
-  onDeletePreset,
-  onProfileChange,
-  onShowCalibrator,
 }: BreathSettingsDrawerProps) {
   const touchStartYRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const openedOnSwipeRef = useRef(false);
 
-  const selectedPreset = settings.selectedPresetId
-    ? presets.find((p) => p.id === settings.selectedPresetId)
-    : null;
-  const hasPresets = presets.length > 0;
+  const breathingModes = [
+    { name: "Default", description: "4:4:6:2" },
+    { name: "Box", description: "1:1:1:1" },
+    { name: "Relax", description: "2:0.5:3:0.5" },
+    { name: "Coherent", description: "1:0:1:0" },
+    { name: "4-7-8", description: "4:7:8:0" },
+    { name: "Custom", description: "Свой ритм" },
+  ];
 
   return (
     <Drawer
@@ -135,42 +106,10 @@ export function BreathSettingsDrawer({
           {/* Pattern Selection Cards */}
           <div className="space-y-4">
             {/* Horizontal scrolling pattern cards */}
-            <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin">
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
-                <div className="text-sm font-medium text-purple-800">
-                  Default
-                </div>
-                <div className="text-xs text-purple-600 mt-1">4:4:6:2</div>
-              </div>
-
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                <div className="text-sm font-medium text-gray-800">Box</div>
-                <div className="text-xs text-gray-600 mt-1">1:1:1:1</div>
-              </div>
-
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                <div className="text-sm font-medium text-gray-800">Relax</div>
-                <div className="text-xs text-gray-600 mt-1">2:0.5:3:0.5</div>
-              </div>
-
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                <div className="text-sm font-medium text-gray-800">
-                  Coherent
-                </div>
-                <div className="text-xs text-gray-600 mt-1">1:0:1:0</div>
-              </div>
-
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                <div className="text-sm font-medium text-gray-800">4-7-8</div>
-                <div className="text-xs text-gray-600 mt-1">4:7:8:0</div>
-              </div>
-
-              <div className="flex-shrink-0 w-32 h-24 p-3 bg-indigo-50 border border-indigo-200 rounded-lg cursor-pointer hover:bg-indigo-100 transition-colors">
-                <div className="text-sm font-medium text-indigo-800">
-                  Custom
-                </div>
-                <div className="text-xs text-indigo-600 mt-1">Свой ритм</div>
-              </div>
+            <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 no-scrollbar">
+              {breathingModes.map((mode) => (
+                <BreathingModeCard key={mode.name} {...mode} />
+              ))}
             </div>
           </div>
         </div>
