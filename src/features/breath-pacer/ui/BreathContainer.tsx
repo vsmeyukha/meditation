@@ -38,7 +38,6 @@ import {
   DrawerHeader,
 } from "@/shared/ui/drawer";
 import { CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
-import { Settings } from "lucide-react";
 
 const defaultDurations = {
   inhaleSec: 4,
@@ -75,36 +74,30 @@ export function BreathContainer() {
         const cardRect = cardRef.current.getBoundingClientRect();
         const toastTop = cardRect.bottom + 40;
 
-        toast(
-          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
-          {
-            duration: 5000,
-            position: "top-center",
-            classNames: {
-              toast: "toast-card-style",
-            },
-            style: {
-              position: "fixed",
-              top: `${toastTop}px`,
-              left: `${cardRect.left}px`,
-              width: `${cardRect.width}px`,
-              transform: "none",
-              zIndex: 50,
-            },
+        toast("Свайпните вверх, чтобы выбрать режим дыхания", {
+          duration: 5000,
+          position: "top-center",
+          classNames: {
+            toast: "toast-card-style",
           },
-        );
+          style: {
+            position: "fixed",
+            top: `${toastTop}px`,
+            left: `${cardRect.left}px`,
+            width: `${cardRect.width}px`,
+            transform: "none",
+            zIndex: 50,
+          },
+        });
       } else {
         // Fallback to normal positioning
-        toast(
-          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
-          {
-            duration: 5000,
-            position: "top-center",
-            classNames: {
-              toast: "toast-card-style",
-            },
+        toast("Свайпните вверх, чтобы выбрать режим дыхания", {
+          duration: 5000,
+          position: "top-center",
+          classNames: {
+            toast: "toast-card-style",
           },
-        );
+        });
       }
     }, 1500); // Small delay to ensure card is rendered
   }, []);
@@ -233,17 +226,6 @@ export function BreathContainer() {
             dismissible={true}
             shouldScaleBackground={false}
           >
-            <DrawerTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              >
-                <Settings className="h-4 w-4" />
-                <span className="sr-only">Настройки дыхания</span>
-              </Button>
-            </DrawerTrigger>
-
             {/* Bottom swipe trigger rendered via portal to escape card's containing block */}
             {isHydrated &&
               createPortal(
