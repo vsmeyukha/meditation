@@ -49,43 +49,29 @@ export function BreathPracticeWidget() {
     setPresets(getBreathPresets());
     setIsHydrated(true);
 
-    // Show instructions toast below the card
+    // Show instructions toast only when card is rendered and positioned correctly
     setTimeout(() => {
       if (cardRef.current) {
         const cardRect = cardRef.current.getBoundingClientRect();
         const toastTop = cardRect.bottom + 40;
 
-        toast(
-          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
-          {
-            duration: 5000,
-            position: "top-center",
-            classNames: {
-              toast: "toast-card-style",
-            },
-            style: {
-              position: "fixed",
-              top: `${toastTop}px`,
-              left: `${cardRect.left}px`,
-              width: `${cardRect.width}px`,
-              transform: "none",
-              zIndex: 50,
-            },
+        toast("Свайпните вверх, чтобы выбрать режим дыхания", {
+          duration: 5000,
+          position: "top-center",
+          classNames: {
+            toast: "toast-card-style",
           },
-        );
-      } else {
-        // Fallback to normal positioning
-        toast(
-          "тап — пауза • свайп ↑ от ручки — настройки • двойной тап — калибровка",
-          {
-            duration: 5000,
-            position: "top-center",
-            classNames: {
-              toast: "toast-card-style",
-            },
+          style: {
+            position: "fixed",
+            top: `${toastTop}px`,
+            left: `${cardRect.left}px`,
+            width: `${cardRect.width}px`,
+            transform: "none",
+            zIndex: 50,
           },
-        );
+        });
       }
+      // No fallback - don't show misleading instructions if UI isn't ready
     }, 1500); // Small delay to ensure card is rendered
   }, []);
 
