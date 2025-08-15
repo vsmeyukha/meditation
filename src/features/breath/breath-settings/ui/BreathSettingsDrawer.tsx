@@ -136,139 +136,49 @@ export function BreathSettingsDrawer({
         </DrawerHeader>
 
         <div className="flex flex-col gap-6 px-4 pb-6">
-          {/* Mode Selection */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-medium">Режим дыхания</h3>
-            <Tabs
-              value={settings.currentMode}
-              onValueChange={(value) =>
-                onModeChange(value as "default" | "custom")
-              }
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="default">Стандарт</TabsTrigger>
-                <TabsTrigger value="custom">Свой ритм</TabsTrigger>
-              </TabsList>
-            </Tabs>
+          {/* Pattern Selection Cards */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Выберите режим дыхания</h3>
 
-            {/* Current pattern detailed info */}
-            <div className="text-sm text-muted-foreground p-3 bg-gray-50 rounded-lg">
-              {settings.currentMode === "default" ? (
-                <p>
-                  Стандартный паттерн: Вдох 4с → Пауза 4с → Выдох 6с → Пауза 2с
-                </p>
-              ) : selectedPreset ? (
-                <p>
-                  {selectedPreset.name}: Вдох {selectedPreset.inhaleSec}с →
-                  Пауза {selectedPreset.holdTopSec}с → Выдох{" "}
-                  {selectedPreset.exhaleSec}с → Пауза{" "}
-                  {selectedPreset.holdBottomSec}с
-                </p>
-              ) : (
-                <p>Создайте свой первый паттерн с помощью калибровки</p>
-              )}
-            </div>
-          </div>
-
-          {/* Custom Mode Controls */}
-          {settings.currentMode === "custom" && (
-            <div className="space-y-6">
-              {/* Existing Presets Section */}
-              {hasPresets && (
-                <div className="space-y-3">
-                  <h4 className="text-md font-medium">Сохранённые паттерны</h4>
-                  <div className="flex items-center gap-3">
-                    <Select
-                      value={settings.selectedPresetId}
-                      onValueChange={onPresetChange}
-                    >
-                      <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Выберите паттерн" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {presets.map((preset) => (
-                          <SelectItem key={preset.id} value={preset.id}>
-                            <div className="flex items-center justify-between w-full">
-                              <span>{preset.name}</span>
-                              <span className="text-xs text-muted-foreground ml-2">
-                                {preset.inhaleSec}/{preset.holdTopSec}/
-                                {preset.exhaleSec}/{preset.holdBottomSec}
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    {selectedPreset && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onDeletePreset(selectedPreset.id)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        ✕
-                      </Button>
-                    )}
-                  </div>
+            {/* Horizontal scrolling pattern cards */}
+            <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin">
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
+                <div className="text-sm font-medium text-purple-800">
+                  Default
                 </div>
-              )}
+                <div className="text-xs text-purple-600 mt-1">4:4:6:2</div>
+              </div>
 
-              {/* Create New Pattern Section */}
-              <div className="space-y-4">
-                <h4 className="text-md font-medium">Создать новый паттерн</h4>
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="text-sm font-medium text-gray-800">Box</div>
+                <div className="text-xs text-gray-600 mt-1">1:1:1:1</div>
+              </div>
 
-                {/* Profile Selection */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-muted-foreground">
-                    Профиль соотношений:
-                  </label>
-                  <Select
-                    value={settings.selectedProfile}
-                    onValueChange={onProfileChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="default">Default 4:4:6:2</SelectItem>
-                      <SelectItem value="box">Box 1:1:1:1</SelectItem>
-                      <SelectItem value="coherent">Coherent 1:0:1:0</SelectItem>
-                      <SelectItem value="relax">Relax 2:0.5:3:0.5</SelectItem>
-                      <SelectItem value="478">4-7-8</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="text-sm font-medium text-gray-800">Relax</div>
+                <div className="text-xs text-gray-600 mt-1">2:0.5:3:0.5</div>
+              </div>
+
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="text-sm font-medium text-gray-800">
+                  Coherent
                 </div>
+                <div className="text-xs text-gray-600 mt-1">1:0:1:0</div>
+              </div>
 
-                {/* Calibration */}
-                <div className="space-y-3">
-                  <label className="text-sm font-medium text-muted-foreground">
-                    Калибровка по вашему ритму:
-                  </label>
-                  <div className="flex gap-3">
-                    <input
-                      type="text"
-                      placeholder="Название паттерна (опционально)"
-                      value={customName}
-                      onChange={(e) => onCustomNameChange(e.target.value)}
-                      className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm bg-white/60 backdrop-blur-sm"
-                    />
-                    <Button
-                      onClick={onShowCalibrator}
-                      className="rounded-md bg-indigo-500 hover:bg-indigo-600 text-white"
-                    >
-                      Калибровать
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Калибровка поможет создать паттерн на основе вашего
-                    естественного ритма дыхания
-                  </p>
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="text-sm font-medium text-gray-800">4-7-8</div>
+                <div className="text-xs text-gray-600 mt-1">4:7:8:0</div>
+              </div>
+
+              <div className="flex-shrink-0 w-32 h-24 p-3 bg-indigo-50 border border-indigo-200 rounded-lg cursor-pointer hover:bg-indigo-100 transition-colors">
+                <div className="text-sm font-medium text-indigo-800">
+                  Custom
                 </div>
+                <div className="text-xs text-indigo-600 mt-1">Свой ритм</div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </DrawerContent>
     </Drawer>
