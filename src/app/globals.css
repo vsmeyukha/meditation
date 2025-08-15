@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "./app/**/*.{js,ts,jsx,tsx}" "./components/**/*.{js,ts,jsx,tsx}" "./src/**/*.{js,ts,jsx,tsx}" "./pages/**/*.{js,ts,jsx,tsx}";
 @plugin "tailwindcss-animate";
 
 :root {
@@ -12,7 +13,7 @@
   --foreground: hsl(0 0% 98%);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

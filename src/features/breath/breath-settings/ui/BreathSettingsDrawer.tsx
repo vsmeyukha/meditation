@@ -130,7 +130,7 @@ export function BreathSettingsDrawer({
           document.body,
         )}
 
-      <DrawerContent className="pb-6">
+      <DrawerContent className="pb-6 bg-[#251b47] border-none">
         <div className="flex flex-col gap-6 px-4 pb-6">
           {/* Pattern Selection Cards */}
           <div className="space-y-4">
