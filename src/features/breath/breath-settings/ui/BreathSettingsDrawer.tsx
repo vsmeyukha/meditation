@@ -2,7 +2,13 @@
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/shared/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/shared/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/shared/ui/drawer";
 import { Settings } from "lucide-react";
 import { BreathingModeCard } from "./breathingModeCard";
 
@@ -24,12 +30,27 @@ export function BreathSettingsDrawer({
   const openedOnSwipeRef = useRef(false);
 
   const breathingModes = [
-    { name: "Default", description: "4:4:6:2" },
-    { name: "Box", description: "1:1:1:1" },
-    { name: "Relax", description: "2:0.5:3:0.5" },
-    { name: "Coherent", description: "1:0:1:0" },
-    { name: "4-7-8", description: "4:7:8:0" },
-    { name: "Custom", description: "Свой ритм" },
+    {
+      name: "Default",
+      className: "bg-gradient-to-br from-purple-400 to-indigo-500",
+    },
+    { name: "Box", className: "bg-gradient-to-br from-blue-400 to-blue-600" },
+    {
+      name: "Relax",
+      className: "bg-gradient-to-br from-orange-300 to-pink-400",
+    },
+    {
+      name: "Coherent",
+      className: "bg-gradient-to-br from-teal-400 to-green-500",
+    },
+    {
+      name: "4-7-8",
+      className: "bg-gradient-to-br from-purple-600 to-indigo-700",
+    },
+    {
+      name: "Custom",
+      className: "bg-gradient-to-br from-indigo-500 to-purple-600",
+    },
   ];
 
   return (
@@ -52,12 +73,11 @@ export function BreathSettingsDrawer({
 
       {/* Bottom swipe trigger rendered via portal to escape card's containing block */}
       {isHydrated &&
+        !isRunning &&
         createPortal(
           <DrawerTrigger asChild>
             <div
-              className={`fixed bottom-0 left-0 right-0 h-20 transition-opacity duration-[2000ms] ease-in-out ${
-                isRunning ? "opacity-0 pointer-events-none" : "opacity-100"
-              }`}
+              className="fixed bottom-0 left-0 right-0 h-20 transition-opacity duration-[2000ms] ease-in-out opacity-100"
               style={{ zIndex: 9999 }}
               role="button"
               tabIndex={0}
@@ -102,6 +122,10 @@ export function BreathSettingsDrawer({
         )}
 
       <DrawerContent className="pb-6 bg-[#251b47] border-none">
+        <DrawerTitle className="sr-only">Настройки дыхания</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          Выберите режим дыхательного упражнения
+        </DrawerDescription>
         <div className="flex flex-col gap-6 px-4 pb-6">
           {/* Pattern Selection Cards */}
           <div className="space-y-4">
