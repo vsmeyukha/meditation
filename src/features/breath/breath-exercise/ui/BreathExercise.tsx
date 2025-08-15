@@ -6,7 +6,7 @@ import { SoundEngine } from "../lib/sound-engine";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
-interface BreathPacerProps {
+interface BreathExerciseProps {
   inhaleSec?: number;
   holdTopSec?: number;
   exhaleSec?: number;
@@ -15,14 +15,14 @@ interface BreathPacerProps {
   onDoubleClick?: () => void;
 }
 
-export function BreathPacer({
+export function BreathExercise({
   inhaleSec = 4,
   holdTopSec = 4,
   exhaleSec = 6,
   holdBottomSec = 2,
   onRunningChange,
   onDoubleClick,
-}: BreathPacerProps) {
+}: BreathExerciseProps) {
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
   const [progress, setProgress] = useState(0); // 0..1 for current phase
