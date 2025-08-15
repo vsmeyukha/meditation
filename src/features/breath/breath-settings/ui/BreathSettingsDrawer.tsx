@@ -130,16 +130,10 @@ export function BreathSettingsDrawer({
           document.body,
         )}
 
-      <DrawerContent className="min-h-[95vh]">
-        <DrawerHeader>
-          <DrawerTitle>Настройки дыхания</DrawerTitle>
-        </DrawerHeader>
-
+      <DrawerContent className="pb-6">
         <div className="flex flex-col gap-6 px-4 pb-6">
           {/* Pattern Selection Cards */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Выберите режим дыхания</h3>
-
             {/* Horizontal scrolling pattern cards */}
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin">
               <div className="flex-shrink-0 w-32 h-24 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
