@@ -103,6 +103,7 @@ export function BreathSettingsDrawer({
       {/* Bottom swipe trigger rendered via portal to escape card's containing block */}
       {isHydrated &&
         !isRunning &&
+        !isOpen &&
         createPortal(
           <DrawerTrigger asChild>
             <div
