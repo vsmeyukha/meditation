@@ -22,6 +22,7 @@ import {
   type BreathSettings,
 } from "@/features/breath/breath-settings/lib/breath-storage";
 import { CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
+import { AutoHeight } from "@/shared/ui/auto-height";
 import { DEFAULT_CYCLE_SECONDS } from "../config";
 
 function getBreathingModeDescription(profile: Profile): string {
@@ -150,6 +151,7 @@ export function BreathPracticeWidget() {
   };
 
   // Handle mode switching
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleModeChange = (mode: "default" | "custom") => {
     if (mode === "default") {
       updateSettings({ currentMode: "default" });
@@ -163,6 +165,7 @@ export function BreathPracticeWidget() {
   };
 
   // Handle preset selection
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handlePresetChange = (presetId: string) => {
     updateSettings({
       currentMode: "custom",
@@ -171,6 +174,7 @@ export function BreathPracticeWidget() {
   };
 
   // Handle preset deletion
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDeletePreset = (presetId: string) => {
     deleteBreathPreset(presetId);
     setPresets(getBreathPresets());
@@ -233,7 +237,12 @@ export function BreathPracticeWidget() {
 
       {/* Content */}
       <CardContent>
-        <div className="flex flex-col items-center gap-6">
+        <AutoHeight
+          className="flex flex-col items-center gap-6"
+          trigger={[settings.selectedProfile, settings.currentMode, isRunning]}
+          durationMs={400}
+          easing="ease-in-out"
+        >
           <BreathExercise
             {...currentDurations}
             profile={settings.selectedProfile}
@@ -273,7 +282,7 @@ export function BreathPracticeWidget() {
               />
             )}
           </div>
-        </div>
+        </AutoHeight>
       </CardContent>
     </div>
   );
