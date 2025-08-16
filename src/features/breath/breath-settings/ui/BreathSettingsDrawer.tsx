@@ -113,13 +113,17 @@ export function BreathSettingsDrawer({
           document.body,
         )}
 
-      <DrawerContent className="pb-6 bg-[#251b47] border-none outline-none focus:outline-none focus-visible:outline-none">
-        <DrawerTitle className="sr-only">Настройки дыхания</DrawerTitle>
-        <DrawerDescription className="sr-only">
+      <DrawerContent
+        showHandle={false}
+        className="pb-6 bg-[#251b47] border-none outline-none focus:outline-none focus-visible:outline-none"
+      >
+        <DrawerTitle className="sr-only m-0 p-0">Настройки дыхания</DrawerTitle>
+        <DrawerDescription className="sr-only m-0 p-0">
           Выберите режим дыхательного упражнения
         </DrawerDescription>
         <div className="flex flex-col gap-6 px-4 pb-6">
           {/* Pattern Selection Cards */}
+          <div className="w-12 h-1 bg-gray-300/60 rounded-full mb-2 mt-3 self-center" />
           <div className="space-y-4">
             {/* Horizontal scrolling pattern cards */}
             <div className="flex gap-3 overflow-x-auto py-2 -mx-2 px-2 no-scrollbar">
