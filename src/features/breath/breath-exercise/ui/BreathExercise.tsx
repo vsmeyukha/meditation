@@ -5,7 +5,7 @@ import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
 import { type Profile } from "../lib/ratios";
 import { BreathShape } from "./BreathShape";
-import { Badge } from "@/shared/ui/badge";
+import { BreathBadges } from "./BreathBadges";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
@@ -248,8 +248,6 @@ export function BreathExercise({
     },
   ];
 
-  // No gradient styling for badges anymore; using dimmed default badges
-
   const onShapeClick = () => {
     const now = Date.now();
     const timeDiff = now - lastClickTimeRef.current;
@@ -338,21 +336,7 @@ export function BreathExercise({
           running ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        {/* Wrapping row of small, rounded, dimmed badges */}
-        <div className="px-6">
-          <div className="flex flex-row flex-wrap gap-2">
-            {phaseLabels.map(({ phase: phaseKey, label, duration }) => (
-              <Badge
-                key={phaseKey}
-                variant="default"
-                className="h-6 px-2 rounded-2xl text-xs bg-foreground/10 text-foreground/70 border-transparent"
-                aria-label={`${label}: ${duration} секунд`}
-              >
-                {label}: {duration}с
-              </Badge>
-            ))}
-          </div>
-        </div>
+        <BreathBadges phaseLabels={phaseLabels} />
       </div>
     </div>
   );
