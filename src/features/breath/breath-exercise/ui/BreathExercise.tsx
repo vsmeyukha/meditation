@@ -5,6 +5,7 @@ import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
 import { type Profile } from "../lib/ratios";
 import { BreathShape } from "./BreathShape";
+import { Badge } from "@/shared/ui/badge";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
@@ -247,6 +248,8 @@ export function BreathExercise({
     },
   ];
 
+  // No gradient styling for badges anymore; using dimmed default badges
+
   const onShapeClick = () => {
     const now = Date.now();
     const timeDiff = now - lastClickTimeRef.current;
@@ -331,32 +334,25 @@ export function BreathExercise({
       )}
 
       <div
-        className={`w-full max-w-md space-y-3 transition-all duration-[2000ms] ease-in-out ${
+        className={`w-full transition-all duration-[2000ms] ease-in-out ${
           running ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="grid grid-cols-4 gap-2 text-xs">
-          {phaseLabels.map(({ phase: phaseKey, label, duration }) => (
-            <div
-              key={phaseKey}
-              className={`text-center transition-all duration-700 ease-in-out ${
-                running && phase === phaseKey
-                  ? "text-purple-600"
-                  : "text-[hsl(277_36%_22%)]/70"
-              }`}
-            >
-              {label}: {duration}с
-            </div>
-          ))}
+        {/* Wrapping row of small, rounded, dimmed badges */}
+        <div className="px-6">
+          <div className="flex flex-row flex-wrap gap-2">
+            {phaseLabels.map(({ phase: phaseKey, label, duration }) => (
+              <Badge
+                key={phaseKey}
+                variant="default"
+                className="h-6 px-2 rounded-2xl text-xs bg-foreground/10 text-foreground/70 border-transparent"
+                aria-label={`${label}: ${duration} секунд`}
+              >
+                {label}: {duration}с
+              </Badge>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div
-        className={`text-center text-sm transition-all duration-[2000ms] ease-in-out ${
-          running ? "opacity-0 pointer-events-none" : "opacity-100"
-        } text-[hsl(277_36%_22%)]/60`}
-      >
-        Нажмите, чтобы начать
       </div>
     </div>
   );
