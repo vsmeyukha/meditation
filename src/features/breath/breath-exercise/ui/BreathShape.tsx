@@ -61,7 +61,7 @@ export function BreathShape({
             />
           </filter>
         </defs>
-        <g className="transition-opacity duration-200 ease-in-out">
+        <g className="transition-opacity duration-500 ease-in-out">
           <path
             d="M5 60 C 20 35, 35 35, 50 60 S 80 85, 95 60"
             fill="none"
@@ -102,7 +102,7 @@ export function BreathShape({
           const offHoldTop = -(segInhale + gapLen);
           const offExhale = -(segInhale + segHoldTop + gapLen);
           return (
-            <g className="transition-opacity duration-200 ease-in-out">
+            <g className="transition-opacity duration-500 ease-in-out">
               <circle
                 cx={cx}
                 cy={cy}

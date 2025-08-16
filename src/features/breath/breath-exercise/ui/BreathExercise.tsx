@@ -164,6 +164,16 @@ export function BreathExercise({
     return { scale };
   }, [phase, progress]);
 
+  // Smooth display scale to avoid jump on stop/start
+  const MIN_SCALE = 0.6;
+  const [displayScale, setDisplayScale] = useState(ring.scale);
+  useEffect(() => {
+    if (running) setDisplayScale(ring.scale);
+  }, [ring.scale, running]);
+  useEffect(() => {
+    if (!running) setDisplayScale(MIN_SCALE);
+  }, [running]);
+
   // Smoothly fade shape when profile changes
   const [shapeProfile, setShapeProfile] = useState(profile);
   const [shapeVisible, setShapeVisible] = useState(true);
@@ -173,7 +183,7 @@ export function BreathExercise({
     const t = window.setTimeout(() => {
       setShapeProfile(profile);
       setShapeVisible(true);
-    }, 220); // match CSS duration
+    }, 520); // match CSS duration
     return () => window.clearTimeout(t);
   }, [profile, shapeProfile]);
 
@@ -261,8 +271,8 @@ export function BreathExercise({
   return (
     <div className="flex flex-col items-center gap-6">
       <div
-        className="relative grid place-items-center transition-transform duration-200 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)] cursor-pointer"
-        style={{ transform: `scale(${ring.scale})` }}
+        className="relative grid place-items-center transition-transform duration-500 ease-out w-[min(75vw,220px)] h-[min(75vw,220px)] cursor-pointer"
+        style={{ transform: `scale(${displayScale})` }}
         role="button"
         aria-label={
           running
@@ -279,7 +289,7 @@ export function BreathExercise({
         }}
       >
         <div
-          className={`absolute inset-0 transition-opacity duration-200 ease-in-out ${shapeVisible ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${shapeVisible ? "opacity-100" : "opacity-0"}`}
         >
           <BreathShape
             profile={shapeProfile}
