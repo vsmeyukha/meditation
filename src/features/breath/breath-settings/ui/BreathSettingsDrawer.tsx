@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   Drawer,
@@ -9,6 +9,7 @@ import {
   DrawerTrigger,
 } from "@/shared/ui/drawer";
 import { BreathingModeCard } from "./breathingModeCard";
+import { BreathTechniqueStory } from "@/features/breath/breath-exercise/ui";
 import { type Profile } from "@/features/breath/breath-exercise/lib/ratios";
 import { breathingModes } from "@/features/breath/config/modes";
 
@@ -32,6 +33,7 @@ export function BreathSettingsDrawer({
   const touchStartYRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const openedOnSwipeRef = useRef(false);
+  const [storyOpen, setStoryOpen] = useState(false);
 
   const handleModeSelect = (profile: Profile | "custom") => {
     if (profile === "custom") {
@@ -39,7 +41,7 @@ export function BreathSettingsDrawer({
       return;
     }
     onProfileChange(profile);
-    onOpenChange(false); // Close drawer after selection
+    setStoryOpen(true);
   };
 
   const getCardClassName = (modeProfile: Profile | "custom") => {
@@ -141,6 +143,16 @@ export function BreathSettingsDrawer({
           </div>
         </div>
       </DrawerContent>
+
+      <BreathTechniqueStory
+        open={storyOpen}
+        onOpenChange={(o) => {
+          setStoryOpen(o);
+          if (!o) onOpenChange(false);
+        }}
+        profile={currentProfile}
+        autoCloseMs={10000}
+      />
     </Drawer>
   );
 }

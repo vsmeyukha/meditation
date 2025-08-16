@@ -5,7 +5,7 @@ import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
 import { type Profile } from "../lib/ratios";
 import { BreathShape } from "./BreathShape";
-import { BreathBadges } from "./BreathBadges";
+import { BreathBadges } from "./";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
