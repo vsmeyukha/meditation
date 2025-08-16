@@ -137,7 +137,11 @@ export function BreathTechniqueStory({
       <DrawerContent
         showHandle={false}
         className={`${bgClass} text-white border-none rounded-none p-0`}
-        style={{ height: "100vh", maxHeight: "100vh" }}
+        style={{
+          height: "100svh",
+          maxHeight: "100svh",
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
       >
         <DrawerTitle className="sr-only">{meta.title}</DrawerTitle>
         <DrawerDescription className="sr-only">
