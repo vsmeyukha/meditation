@@ -1,5 +1,6 @@
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import { SplashIntro } from "@/shared/ui/SplashIntro";
 
 // Static metadata for instant loading
 export const metadata = {
@@ -10,6 +11,7 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="h-[calc(100svh-3.5rem)]">
+      <SplashIntro />
       <section className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-6 text-center">
         {/* Static shell - renders instantly with PPR */}
         <Button
