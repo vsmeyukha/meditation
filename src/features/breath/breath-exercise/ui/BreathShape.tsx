@@ -61,14 +61,16 @@ export function BreathShape({
             />
           </filter>
         </defs>
-        <path
-          d="M5 60 C 20 35, 35 35, 50 60 S 80 85, 95 60"
-          fill="none"
-          stroke="url(#relax-grad)"
-          strokeWidth="6"
-          strokeLinecap="round"
-          filter="url(#relax-shadow)"
-        />
+        <g className="transition-opacity duration-200 ease-in-out">
+          <path
+            d="M5 60 C 20 35, 35 35, 50 60 S 80 85, 95 60"
+            fill="none"
+            stroke="url(#relax-grad)"
+            strokeWidth="6"
+            strokeLinecap="round"
+            filter="url(#relax-shadow)"
+          />
+        </g>
       </svg>
     );
   }
@@ -100,7 +102,7 @@ export function BreathShape({
           const offHoldTop = -(segInhale + gapLen);
           const offExhale = -(segInhale + segHoldTop + gapLen);
           return (
-            <g>
+            <g className="transition-opacity duration-200 ease-in-out">
               <circle
                 cx={cx}
                 cy={cy}

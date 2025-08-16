@@ -164,6 +164,19 @@ export function BreathExercise({
     return { scale };
   }, [phase, progress]);
 
+  // Smoothly fade shape when profile changes
+  const [shapeProfile, setShapeProfile] = useState(profile);
+  const [shapeVisible, setShapeVisible] = useState(true);
+  useEffect(() => {
+    if (profile === shapeProfile) return;
+    setShapeVisible(false);
+    const t = window.setTimeout(() => {
+      setShapeProfile(profile);
+      setShapeVisible(true);
+    }, 220); // match CSS duration
+    return () => window.clearTimeout(t);
+  }, [profile, shapeProfile]);
+
   // Get phase labels based on breathing profile
   const getPhaseLabelsForProfile = (profile: Profile) => {
     switch (profile) {
@@ -265,13 +278,17 @@ export function BreathExercise({
           }
         }}
       >
-        <BreathShape
-          profile={profile}
-          inhaleSec={inhaleSec}
-          holdTopSec={holdTopSec}
-          exhaleSec={exhaleSec}
-          holdBottomSec={holdBottomSec}
-        />
+        <div
+          className={`absolute inset-0 transition-opacity duration-200 ease-in-out ${shapeVisible ? "opacity-100" : "opacity-0"}`}
+        >
+          <BreathShape
+            profile={shapeProfile}
+            inhaleSec={inhaleSec}
+            holdTopSec={holdTopSec}
+            exhaleSec={exhaleSec}
+            holdBottomSec={holdBottomSec}
+          />
+        </div>
         {profile !== "relax" && (
           <div className="relative z-10 text-center">
             <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/70">
