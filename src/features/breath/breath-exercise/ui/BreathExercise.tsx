@@ -4,6 +4,7 @@ import { vibrate } from "@/shared/lib/haptics";
 import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
 import { type Profile } from "../lib/ratios";
+import { BreathShape } from "./BreathShape";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
@@ -223,36 +224,26 @@ export function BreathExercise({
     },
   ];
 
-  const shapeClasses = useMemo(() => {
-    switch (profile) {
-      case "box":
-        return { outer: "rounded-sm", inner: "rounded-sm" };
-      case "coherent":
-        return { outer: "rounded-lg", inner: "rounded-lg" };
-      case "default":
-      case "relax":
-      case "478":
-      default:
-        return { outer: "rounded-full", inner: "rounded-full" };
-    }
-  }, [profile]);
+  const onShapeClick = () => {
+    const now = Date.now();
+    const timeDiff = now - lastClickTimeRef.current;
 
-  const waveClipPath =
-    "polygon(0% 12%, 10% 16%, 20% 12%, 30% 8%, 40% 12%, 50% 16%, 60% 12%, 70% 8%, 80% 12%, 90% 16%, 100% 12%, 100% 88%, 90% 84%, 80% 88%, 70% 92%, 60% 88%, 50% 84%, 40% 88%, 30% 92%, 20% 88%, 10% 84%, 0% 88%)";
-
-  const outerShapeStyle = useMemo<React.CSSProperties | undefined>(() => {
-    if (profile === "relax") {
-      return { clipPath: waveClipPath };
+    if (timeDiff < 300) {
+      // Double tap detected (within 300ms)
+      clickCountRef.current = 0;
+      onDoubleClick?.();
+    } else {
+      clickCountRef.current = 1;
+      setTimeout(() => {
+        if (clickCountRef.current === 1) {
+          // Single tap action
+          setRunning((prev) => !prev);
+        }
+      }, 300);
     }
-    return undefined;
-  }, [profile]);
 
-  const innerShapeStyle = useMemo<React.CSSProperties | undefined>(() => {
-    if (profile === "relax") {
-      return { clipPath: waveClipPath };
-    }
-    return undefined;
-  }, [profile]);
+    lastClickTimeRef.current = now;
+  };
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -265,26 +256,7 @@ export function BreathExercise({
             ? `Дыхательная визуализация, текущая фаза: ${getPhaseText(phase)}. Нажмите для остановки`
             : "Нажмите чтобы начать дыхательную практику"
         }
-        onClick={() => {
-          const now = Date.now();
-          const timeDiff = now - lastClickTimeRef.current;
-
-          if (timeDiff < 300) {
-            // Double tap detected (within 300ms)
-            clickCountRef.current = 0;
-            onDoubleClick?.();
-          } else {
-            clickCountRef.current = 1;
-            setTimeout(() => {
-              if (clickCountRef.current === 1) {
-                // Single tap action
-                setRunning((prev) => !prev);
-              }
-            }, 300);
-          }
-
-          lastClickTimeRef.current = now;
-        }}
+        onClick={onShapeClick}
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
@@ -293,153 +265,26 @@ export function BreathExercise({
           }
         }}
       >
-        {profile === "relax" ? (
-          <svg
-            className="absolute inset-0"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="xMidYMid meet"
-            aria-hidden="true"
-          >
-            <defs>
-              <linearGradient
-                id="relax-grad"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="#a78bfa" />
-                <stop offset="50%" stopColor="#c4b5fd" />
-                <stop offset="100%" stopColor="#818cf8" />
-              </linearGradient>
-              <filter
-                id="relax-shadow"
-                x="-20%"
-                y="-20%"
-                width="140%"
-                height="140%"
-              >
-                <feDropShadow
-                  dx="0"
-                  dy="6"
-                  stdDeviation="6"
-                  floodColor="#c4b5fd55"
-                />
-              </filter>
-            </defs>
-            <path
-              d="M5 60 C 20 35, 35 35, 50 60 S 80 85, 95 60"
-              fill="none"
-              stroke="url(#relax-grad)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              filter="url(#relax-shadow)"
-            />
-          </svg>
-        ) : (
-          <>
-            {profile !== "478" && (
-              <>
-                <div
-                  className={`absolute inset-0 ${shapeClasses.outer} bg-gradient-to-br from-purple-400 via-purple-300 to-indigo-400 shadow-lg shadow-purple-200/30`}
-                  style={outerShapeStyle}
-                />
-                <div
-                  className={`absolute inset-4 ${shapeClasses.inner} bg-gradient-to-tl from-purple-100/90 via-white/95 to-blue-50/90 shadow-inner border border-purple-200/40`}
-                  style={innerShapeStyle}
-                />
-              </>
-            )}
-            {profile === "478" && (
-              <svg
-                className="absolute inset-0"
-                viewBox="0 0 100 100"
-                aria-hidden
-              >
-                <defs>
-                  <linearGradient
-                    id="seg-grad"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stopColor="#a78bfa" />
-                    <stop offset="50%" stopColor="#c4b5fd" />
-                    <stop offset="100%" stopColor="#818cf8" />
-                  </linearGradient>
-                </defs>
-                {(() => {
-                  const cx = 50;
-                  const cy = 50;
-                  const r = 40;
-                  const circumference = 2 * Math.PI * r;
-                  const a = inhaleSec + holdTopSec + exhaleSec + holdBottomSec;
-                  const segInhale = (inhaleSec / a) * circumference;
-                  const segHoldTop = (holdTopSec / a) * circumference;
-                  const segExhale = (exhaleSec / a) * circumference;
-                  const gapLen = 8; // visual separation between arcs
-                  const dInhale = `${Math.max(0, segInhale - gapLen)} ${circumference}`;
-                  const dHoldTop = `${Math.max(0, segHoldTop - gapLen)} ${circumference}`;
-                  const dExhale = `${Math.max(0, segExhale - gapLen)} ${circumference}`;
-                  const offInhale = -gapLen; // initial gap before inhale arc
-                  const offHoldTop = -(segInhale + gapLen);
-                  const offExhale = -(segInhale + segHoldTop + gapLen);
-                  return (
-                    <g>
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={r}
-                        stroke="url(#seg-grad)"
-                        strokeWidth="5"
-                        fill="none"
-                        strokeDasharray={dInhale}
-                        strokeDashoffset={offInhale}
-                        strokeLinecap="round"
-                      />
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={r}
-                        stroke="url(#seg-grad)"
-                        strokeWidth="5"
-                        fill="none"
-                        strokeDasharray={dHoldTop}
-                        strokeDashoffset={offHoldTop}
-                        strokeLinecap="round"
-                        opacity="0.9"
-                      />
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={r}
-                        stroke="url(#seg-grad)"
-                        strokeWidth="5"
-                        fill="none"
-                        strokeDasharray={dExhale}
-                        strokeDashoffset={offExhale}
-                        strokeLinecap="round"
-                        opacity="0.8"
-                      />
-                    </g>
-                  );
-                })()}
-              </svg>
-            )}
-            <div className="relative z-10 text-center">
-              <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/70">
-                {running ? "Фаза" : "Нажмите для начала"}
-              </div>
-              <div
-                className="text-2xl font-semibold text-[hsl(277_36%_22%)]"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {running ? getPhaseText(phase) : "Начать"}
-              </div>
+        <BreathShape
+          profile={profile}
+          inhaleSec={inhaleSec}
+          holdTopSec={holdTopSec}
+          exhaleSec={exhaleSec}
+          holdBottomSec={holdBottomSec}
+        />
+        {profile !== "relax" && (
+          <div className="relative z-10 text-center">
+            <div className="text-xs uppercase tracking-wide text-[hsl(277_36%_22%)]/70">
+              {running ? "Фаза" : "Нажмите для начала"}
             </div>
-          </>
+            <div
+              className="text-2xl font-semibold text-[hsl(277_36%_22%)]"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {running ? getPhaseText(phase) : "Начать"}
+            </div>
+          </div>
         )}
       </div>
 
