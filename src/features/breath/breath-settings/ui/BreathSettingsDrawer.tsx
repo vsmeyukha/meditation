@@ -122,7 +122,7 @@ export function BreathSettingsDrawer({
           {/* Pattern Selection Cards */}
           <div className="space-y-4">
             {/* Horizontal scrolling pattern cards */}
-            <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 no-scrollbar">
+            <div className="flex gap-3 overflow-x-auto py-2 -mx-2 px-2 no-scrollbar">
               {breathingModes.map((mode) => (
                 <BreathingModeCard
                   key={mode.name}
