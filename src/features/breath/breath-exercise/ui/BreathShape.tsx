@@ -23,7 +23,7 @@ export function BreathShape({
       case "box":
         return { outer: "rounded-sm", inner: "rounded-sm" };
       case "coherent":
-        return { outer: "rounded-lg", inner: "rounded-lg" };
+        return { outer: "rounded-3xl", inner: "rounded-3xl" };
       case "default":
       case "relax":
       case "478":
