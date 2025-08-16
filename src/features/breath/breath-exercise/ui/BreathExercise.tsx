@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { vibrate } from "@/shared/lib/haptics";
 import { logPractice } from "@/shared/lib/storage";
 import { SoundEngine } from "../lib/sound-engine";
+import { type Profile } from "../lib/ratios";
 
 type Phase = "inhale" | "holdTop" | "exhale" | "holdBottom";
 
@@ -11,6 +12,7 @@ interface BreathExerciseProps {
   holdTopSec?: number;
   exhaleSec?: number;
   holdBottomSec?: number;
+  profile?: Profile;
   onRunningChange?: (running: boolean) => void;
   onDoubleClick?: () => void;
 }
@@ -20,6 +22,7 @@ export function BreathExercise({
   holdTopSec = 4,
   exhaleSec = 6,
   holdBottomSec = 2,
+  profile = "default",
   onRunningChange,
   onDoubleClick,
 }: BreathExerciseProps) {
@@ -160,27 +163,64 @@ export function BreathExercise({
     return { scale };
   }, [phase, progress]);
 
-  // Translation helper for phase names
-  const getPhaseText = (phase: Phase): string => {
-    switch (phase) {
-      case "inhale":
-        return "Вдох";
-      case "holdTop":
-        return "Держим";
-      case "exhale":
-        return "Выдох";
-      case "holdBottom":
-        return "Пауза";
+  // Get phase labels based on breathing profile
+  const getPhaseLabelsForProfile = (profile: Profile) => {
+    switch (profile) {
+      case "box":
+        return {
+          inhale: "Вдох",
+          holdTop: "Удержание",
+          exhale: "Выдох",
+          holdBottom: "Пауза",
+        };
+      case "coherent":
+        return {
+          inhale: "Вдох",
+          holdTop: "Пауза",
+          exhale: "Выдох",
+          holdBottom: "Пауза",
+        };
+      case "relax":
+        return {
+          inhale: "Вдох",
+          holdTop: "Небольшая пауза",
+          exhale: "Медленный выдох",
+          holdBottom: "Отдых",
+        };
+      case "478":
+        return {
+          inhale: "Вдох (4)",
+          holdTop: "Задержка (7)",
+          exhale: "Выдох (8)",
+          holdBottom: "Пауза",
+        };
+      case "default":
       default:
-        return phase;
+        return {
+          inhale: "Вдох",
+          holdTop: "Держим",
+          exhale: "Выдох",
+          holdBottom: "Пауза",
+        };
     }
   };
 
+  // Translation helper for phase names
+  const getPhaseText = (phase: Phase): string => {
+    const labels = getPhaseLabelsForProfile(profile);
+    return labels[phase] || phase;
+  };
+
+  const labels = getPhaseLabelsForProfile(profile);
   const phaseLabels = [
-    { phase: "inhale" as const, label: "Вдох", duration: inhaleSec },
-    { phase: "holdTop" as const, label: "Держим", duration: holdTopSec },
-    { phase: "exhale" as const, label: "Выдох", duration: exhaleSec },
-    { phase: "holdBottom" as const, label: "Пауза", duration: holdBottomSec },
+    { phase: "inhale" as const, label: labels.inhale, duration: inhaleSec },
+    { phase: "holdTop" as const, label: labels.holdTop, duration: holdTopSec },
+    { phase: "exhale" as const, label: labels.exhale, duration: exhaleSec },
+    {
+      phase: "holdBottom" as const,
+      label: labels.holdBottom,
+      duration: holdBottomSec,
+    },
   ];
 
   return (

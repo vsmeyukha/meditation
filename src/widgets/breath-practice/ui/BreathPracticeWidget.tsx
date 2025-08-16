@@ -22,13 +22,24 @@ import {
   type BreathSettings,
 } from "@/features/breath/breath-settings/lib/breath-storage";
 import { CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
+import { DEFAULT_CYCLE_SECONDS } from "../config";
 
-const defaultDurations = {
-  inhaleSec: 4,
-  holdTopSec: 4,
-  exhaleSec: 6,
-  holdBottomSec: 2,
-};
+function getBreathingModeDescription(profile: Profile): string {
+  switch (profile) {
+    case "default":
+      return "Стандартный паттерн дыхания";
+    case "box":
+      return "Квадратное дыхание";
+    case "coherent":
+      return "Когерентное дыхание";
+    case "relax":
+      return "Расслабляющее дыхание";
+    case "478":
+      return "Техника 4-7-8";
+    default:
+      return "Стандартный паттерн дыхания";
+  }
+}
 
 export function BreathPracticeWidget() {
   const [settings, setSettings] = useState<BreathSettings>(() => ({
@@ -88,8 +99,25 @@ export function BreathPracticeWidget() {
         };
       }
     }
-    return defaultDurations;
-  }, [settings.currentMode, settings.selectedPresetId]);
+
+    // Special case for 4-7-8: use exact timing instead of ratios
+    if (settings.selectedProfile === "478") {
+      return {
+        inhaleSec: 4,
+        holdTopSec: 7,
+        exhaleSec: 8,
+        holdBottomSec: 0,
+      };
+    }
+
+    // Use ratios system for other breathing modes
+    const ratios = ratiosForProfile(settings.selectedProfile);
+    return durationsFromCycle(DEFAULT_CYCLE_SECONDS, ratios);
+  }, [
+    settings.currentMode,
+    settings.selectedPresetId,
+    settings.selectedProfile,
+  ]);
 
   // Update settings and persist
   const updateSettings = (updates: Partial<typeof settings>) => {
@@ -208,6 +236,7 @@ export function BreathPracticeWidget() {
         <div className="flex flex-col items-center gap-6">
           <BreathExercise
             {...currentDurations}
+            profile={settings.selectedProfile}
             onRunningChange={(running) => {
               setIsRunning(running);
               if (running) setIsSettingsOpen(false);
@@ -228,7 +257,7 @@ export function BreathPracticeWidget() {
             {/* Current pattern info - minimal display */}
             <div className="text-sm text-center text-muted-foreground">
               {settings.currentMode === "default" ? (
-                <p>Стандартный паттерн дыхания</p>
+                <p>{getBreathingModeDescription(settings.selectedProfile)}</p>
               ) : selectedPreset ? (
                 <p>{selectedPreset.name}</p>
               ) : (

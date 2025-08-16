@@ -8,7 +8,8 @@ interface BreathingModeCardProps {
   name: string;
   icon: ReactNode;
   className?: string;
-  profile: Profile | "custom";
+  profile: Profile | "custom"; // Used for typing breathingModes array
+  onClick?: () => void;
 }
 
 export function BreathingModeCard({
@@ -16,10 +17,12 @@ export function BreathingModeCard({
   className,
   icon,
   profile,
+  onClick,
 }: BreathingModeCardProps) {
   return (
     <Card
       variant="practice"
+      onClick={onClick}
       className={cn(
         "flex-shrink-0 w-20 h-28 cursor-pointer transition-all duration-300 shadow-lg opacity-60 backdrop-blur-sm border-0 py-0 gap-0 hover:opacity-80",
         className,
