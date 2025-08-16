@@ -2,22 +2,26 @@ import { ReactNode } from "react";
 import { cn } from "@/shared/lib/utils";
 import { Card, CardContent } from "@/shared/ui/card";
 
+import { type Profile } from "@/features/breath/breath-exercise/lib/ratios";
+
 interface BreathingModeCardProps {
   name: string;
-  className?: string;
   icon: ReactNode;
+  className?: string;
+  profile: Profile | "custom";
 }
 
 export function BreathingModeCard({
   name,
   className,
   icon,
+  profile,
 }: BreathingModeCardProps) {
   return (
     <Card
       variant="practice"
       className={cn(
-        "flex-shrink-0 w-1/5 h-24 cursor-pointer transition-all duration-300 shadow-lg opacity-60 backdrop-blur-sm border-0 py-0 gap-0 hover:opacity-80",
+        "flex-shrink-0 w-20 h-28 cursor-pointer transition-all duration-300 shadow-lg opacity-60 backdrop-blur-sm border-0 py-0 gap-0 hover:opacity-80",
         className,
       )}
     >

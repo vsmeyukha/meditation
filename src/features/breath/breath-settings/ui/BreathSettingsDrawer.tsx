@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import { createPortal } from "react-dom";
-import { Button } from "@/shared/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -9,14 +8,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/shared/ui/drawer";
-import { Settings } from "lucide-react";
 import { BreathingModeCard } from "./breathingModeCard";
+import { type Profile } from "@/features/breath/breath-exercise/lib/ratios";
 
 interface BreathSettingsDrawerProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   isRunning: boolean;
   isHydrated: boolean;
+  currentProfile: Profile;
+  onProfileChange: (profile: Profile) => void;
 }
 
 export function BreathSettingsDrawer({
@@ -24,25 +25,45 @@ export function BreathSettingsDrawer({
   onOpenChange,
   isRunning,
   isHydrated,
+  currentProfile,
+  onProfileChange,
 }: BreathSettingsDrawerProps) {
   const touchStartYRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const openedOnSwipeRef = useRef(false);
 
+  const handleModeSelect = (profile: Profile | "custom") => {
+    if (profile === "custom") {
+      // TODO: Handle custom mode - will implement custom settings UI later
+      return;
+    }
+    onProfileChange(profile);
+    onOpenChange(false); // Close drawer after selection
+  };
+
   const breathingModes = [
     {
       name: "Default",
-      className: "bg-gradient-to-br from-purple-400 to-indigo-500",
+      profile: "default" as Profile,
+      className: `bg-gradient-to-br from-purple-400 to-indigo-500 ${
+        currentProfile === "default" ? "opacity-100 ring-2 ring-white/50" : ""
+      }`,
       icon: <div className="w-8 h-8 border-2 border-white/70 rounded-full" />,
     },
     {
       name: "Box",
-      className: "bg-gradient-to-br from-blue-400 to-blue-600",
+      profile: "box" as Profile,
+      className: `bg-gradient-to-br from-blue-400 to-blue-600 ${
+        currentProfile === "box" ? "opacity-100 ring-2 ring-white/50" : ""
+      }`,
       icon: <div className="w-8 h-8 border-2 border-white/70 rounded-sm" />,
     },
     {
       name: "Relax",
-      className: "bg-gradient-to-br from-orange-300 to-pink-400",
+      profile: "relax" as Profile,
+      className: `bg-gradient-to-br from-orange-300 to-pink-400 ${
+        currentProfile === "relax" ? "opacity-100 ring-2 ring-white/50" : ""
+      }`,
       icon: (
         <svg
           width="32"
@@ -63,21 +84,28 @@ export function BreathSettingsDrawer({
     },
     {
       name: "Coherent",
-      className: "bg-gradient-to-br from-teal-400 to-green-500",
+      profile: "coherent" as Profile,
+      className: `bg-gradient-to-br from-teal-400 to-green-500 ${
+        currentProfile === "coherent" ? "opacity-100 ring-2 ring-white/50" : ""
+      }`,
       icon: (
         <div className="w-8 h-8 bg-white/30 rounded-lg border border-white/50" />
       ),
     },
     {
       name: "4-7-8",
-      className: "bg-gradient-to-br from-purple-600 to-indigo-700",
+      profile: "478" as Profile,
+      className: `bg-gradient-to-br from-purple-600 to-indigo-700 ${
+        currentProfile === "478" ? "opacity-100 ring-2 ring-white/50" : ""
+      }`,
       icon: <div className="text-white/70 font-bold text-md">4-7-8</div>,
     },
     {
       name: "Custom",
-      className: "bg-gradient-to-br from-indigo-500 to-purple-600",
+      profile: "custom" as const,
+      className: "bg-gradient-to-br from-indigo-500 to-purple-600 opacity-50", // Disabled for now
       icon: (
-        <div className="w-8 h-8 border-2 border-white/70 rounded-md border-dashed" />
+        <div className="w-8 h-8 border-2 border-white/50 rounded-md border-dashed" />
       ),
     },
   ];
@@ -89,17 +117,6 @@ export function BreathSettingsDrawer({
       dismissible={true}
       shouldScaleBackground={false}
     >
-      <DrawerTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-        >
-          <Settings className="h-4 w-4" />
-          <span className="sr-only">Настройки дыхания</span>
-        </Button>
-      </DrawerTrigger>
-
       {/* Bottom swipe trigger rendered via portal to escape card's containing block */}
       {isHydrated &&
         !isRunning &&
@@ -162,7 +179,18 @@ export function BreathSettingsDrawer({
             {/* Horizontal scrolling pattern cards */}
             <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 no-scrollbar">
               {breathingModes.map((mode) => (
-                <BreathingModeCard key={mode.name} {...mode} />
+                <div
+                  key={mode.name}
+                  onClick={() => handleModeSelect(mode.profile)}
+                  className="flex-shrink-0"
+                >
+                  <BreathingModeCard
+                    name={mode.name}
+                    profile={mode.profile}
+                    icon={mode.icon}
+                    className={mode.className}
+                  />
+                </div>
               ))}
             </div>
           </div>

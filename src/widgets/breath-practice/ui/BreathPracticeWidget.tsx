@@ -197,15 +197,8 @@ export function BreathPracticeWidget() {
             onOpenChange={setIsSettingsOpen}
             isRunning={isRunning}
             isHydrated={isHydrated}
-            settings={settings}
-            presets={presets}
-            customName={customName}
-            onCustomNameChange={setCustomName}
-            onModeChange={handleModeChange}
-            onPresetChange={handlePresetChange}
-            onDeletePreset={handleDeletePreset}
+            currentProfile={settings.selectedProfile}
             onProfileChange={handleProfileChange}
-            onShowCalibrator={() => setShowCalibrator(true)}
           />
         </div>
       </CardHeader>
