@@ -140,12 +140,12 @@ export const breathingModes: BreathingMode[] = [
       </svg>
     ),
   },
-  {
-    name: "Custom",
-    profile: "custom",
-    baseClassName: "bg-gradient-to-br from-indigo-500 to-purple-600",
-    icon: (
-      <div className="w-8 h-8 border-2 border-white/50 rounded-md border-dashed" />
-    ),
-  },
+  // {
+  //   name: "Custom",
+  //   profile: "custom",
+  //   baseClassName: "bg-gradient-to-br from-indigo-500 to-purple-600",
+  //   icon: (
+  //     <div className="w-8 h-8 border-2 border-white/50 rounded-md border-dashed" />
+  //   ),
+  // },
 ];
